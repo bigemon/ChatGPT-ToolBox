@@ -1,4 +1,5 @@
 # ChatGPT-ToolBox
+
 由ChatGPT负责编写的ChatGPT工具箱。除了向ChatGPT提供必要的数据，尽可能不由人类写任何代码。
 
 当前版本提供以下功能：
@@ -6,6 +7,11 @@
 1.关闭数据监管
 
 2.会话存档导入导出
+
+# 预览：
+![image](https://user-images.githubusercontent.com/3683548/207093187-32009c31-c341-4d36-a154-db3b1789542a.png)
+
+
 
 
 
