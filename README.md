@@ -76,6 +76,8 @@ window.enableFakeMod=false;var nav=document.querySelector('nav');var aEle=nav.qu
 
 需要注意的是：移动端只有横屏或者是开启桌面模式网站的时候，才能看到覆盖的NAV菜单。
 
+但横屏时候开启了功能不会影响竖屏时的使用。
+
 后续会让ChatGPT给这个自响应NAV也做一个覆盖。
 
 
