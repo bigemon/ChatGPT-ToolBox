@@ -10,6 +10,10 @@
 
 3.存档管理器
 
+# 预览：
+
+<img width="880" alt="image" src="https://user-images.githubusercontent.com/3683548/207937403-e113a2b2-4b1b-4f06-8245-fd80eed4795d.png">
+
 # 🔄更新
 
 2022-12-16
@@ -23,12 +27,6 @@
 . 增加移动端nav覆盖，现在移动端竖屏可以正常使用导航栏
 
 . 修改README里的相关书签链接，提供远端加载最新脚本的书签
-
-
-# 预览：
-
-<img width="880" alt="image" src="https://user-images.githubusercontent.com/3683548/207937403-e113a2b2-4b1b-4f06-8245-fd80eed4795d.png">
-
 
 
 
@@ -75,7 +73,7 @@ javascript:window.enableFakeMod='false'!=localStorage.getItem('enable_fakemod');
 
 
 
-3 . 在ChatGPT聊天界面点击这个书签，即可激活
+3 . 在ChatGPT聊天界面点击这个书签，即可激活(远端拉取版本需要等待1~5秒)
 
 <img width="1150" alt="image" src="https://user-images.githubusercontent.com/3683548/207087766-46563180-b562-44c6-9b5e-4b25804e30e4.png">
 
