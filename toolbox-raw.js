@@ -59,7 +59,7 @@ window.importSaveData = function (savB64) {
         alert("这个存档的Token已过期。");
         return 
     }
-    alert("这个会话存档的有效期最长至：\r\n"+ (new Date(authUnix * 1000)).toLocaleString('en-US'));
+    alert("这个会话存档的有效期最长至：\r\n"+ (new Date(authUnix * 1000)).toLocaleString('en-US')+"\r\n\r\n请注意:导入的会话无法被再次导出，也无法保存");
     window.next_conversation_id = jsonObject.conversation_id;
     window.next_parent_message_id = jsonObject.parent_message_id;
     window.import_authorization = jsonObject.authorization;
@@ -135,24 +135,30 @@ window.fetch = function(...args) {
 	}
     if (args[0].includes("/conversation/")||args[0].includes("/conversations")||args[0].includes("/chat.json")) {
         setTimeout(window.onresize,1000);
+        delete window.import_authorization;
+        delete window.next_parent_message_id;
+        delete window.next_conversation_id;
+        delete window.parent_message_id_last;
+        delete window.conversation_id_last;
+        delete window.authorization_last;
 	}else if (args[0].includes("conversation")) {
 		if (args[1].body && args[1].method === "POST") {
+            //覆盖原始鉴权
+            var headers = new Headers(args[1].headers);
+            let lastAuth = headers.get("authorization");
+            window.authorization_last =  lastAuth;
+            let authorization = window.import_authorization?window.import_authorization:lastAuth;
+            headers.set("authorization", authorization);
+            args[1].headers = headers;
+            //处理会话数据附加
 			if (window.next_conversation_id && window.next_parent_message_id) {
 				let bodyJson = JSON.parse(args[1].body);
 				bodyJson.conversation_id =  window.next_conversation_id ? window.next_conversation_id : bodyJson.conversation_id;
 				bodyJson.parent_message_id = window.next_parent_message_id ? window.next_parent_message_id : bodyJson.parent_message_id;
+				args[1].body = JSON.stringify(bodyJson);
                 delete window.next_parent_message_id;
                 delete window.next_conversation_id;
-                //覆盖原始鉴权
-                var headers = new Headers(args[1].headers);
-                let lastAuth = headers.get("authorization");
-                window.authorization_last =  lastAuth;
-                let authorization = window.import_authorization?window.import_authorization:lastAuth;
-                headers.set("authorization", authorization);
-                args[1].headers = headers;
-				args[1].body = JSON.stringify(bodyJson);
 			} else {
-                delete window.import_authorization;
 				let bodyJson = JSON.parse(args[1].body);
                 window.conversation_id_last = bodyJson.conversation_id;
                 window.parent_message_id_last = bodyJson.parent_message_id;
@@ -177,4 +183,4 @@ window.onresize = function (){
         } , 200);
 };
 window.onresize();
-alert("赛博工具娘v1.1.7脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n1. 官方会话管理已正式推送，移除第三方存档支持\r\n2. 「导入会话」「导出会话」现在可以在新版本正常使用.\r\n3. 导出的会话现在可以分享给其它人 ( 存活时间取决于分享者Token )");
+alert("赛博工具娘v1.1.8脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n1. 官方会话管理已正式推送，移除第三方存档支持\r\n2. 「导入会话」「导出会话」现在可以在新版本正常使用.\r\n3. 导出的会话现在可以分享给其它人 ( 存活时间取决于分享者Token )");
