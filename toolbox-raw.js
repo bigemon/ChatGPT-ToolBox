@@ -80,6 +80,15 @@ window.importSaveData = function (savB64) {
 
     alert("导入成功,当前会话状态已「暂时」附加到导入的存档。这将对您的下一句话生效。\r\n如果该存档的宿主已退出登录或释放该会话，则存档也会一起失效\r\n此时您可能会被提示登录过期。\r\n\r\n若要中途解除附加状态。请刷新浏览器、点击「 +New chat 」新建会话或切换到其它的会话。");
 };
+
+window.clearTempValues = function () {
+    delete window.import_authorization;
+    delete window.next_parent_message_id;
+    delete window.next_conversation_id;
+    delete window.parent_message_id_last;
+    delete window.conversation_id_last;
+    delete window.authorization_last;
+};
 window.boxInit = function () {
     window.clearAllBoxItem();
     var navs = document.querySelectorAll('nav');
@@ -94,12 +103,7 @@ window.boxInit = function () {
                 event.preventDefault();
                 if (confirm("即将创建新的会话, 使用导入功能导入的会话将失效,是否继续?")) {
                     nav.childNodes[0].removeEventListener('click', arguments.callee);
-                    delete window.import_authorization;
-                    delete window.next_parent_message_id;
-                    delete window.next_conversation_id;
-                    delete window.parent_message_id_last;
-                    delete window.conversation_id_last;
-                    delete window.authorization_last;
+                    window.clearTempValues();
                     nav.childNodes[0].click();
                 }
             });
@@ -133,8 +137,17 @@ window.boxInit = function () {
                     window.importSaveData(userInput);
                 }
             }
-            if (aEle[i].innerHTML.indexOf('Log out') >= 0 && !aEle[i].oldOnclick) {
-                nav.removeChild(aEle[i]);
+
+            if (!nav.childNodes[0].hasOwnProperty('patched')) {
+                nav.childNodes[0].addEventListener("click", function (event) {
+                    event.preventDefault();
+                    if (confirm("即将创建新的会话, 使用导入功能导入的会话将失效,是否继续?")) {
+                        nav.childNodes[0].removeEventListener('click', arguments.callee);
+                        window.clearTempValues();
+                        nav.childNodes[0].click();
+                    }
+                });
+                Object.defineProperty(nav.childNodes[0], 'patched', { value: true, enumerable: false });
             }
         }
 
@@ -162,14 +175,25 @@ window.fetch = function (...args) {
             statusText: "ok",
         })
     }
+    if (args[0].includes("signout") && window.enableFakeMod) {
+        if (!confirm("是否要退出登录？")) {
+            return new Response('{}', {
+                status: 200,
+                statusText: "ok",
+            })
+        }
+    }
     if (args[0].includes("/conversation/") || args[0].includes("/conversations") || args[0].includes("/chat.json")) {
+        if (args[0].includes("/conversations") && args[1].method === "PATCH") {
+            let bodyJson = JSON.parse(args[1].body);
+            bodyJson.is_visible = !(confirm("警告:真的要清空您账户下所有的会话记录？") && confirm("警告:第二次确认,清空后您将无法找回之前的所有记录!是否继续？"));
+            if (!bodyJson.is_visible) {
+                window.clearTempValues();
+            }
+            args[1].body = JSON.stringify(bodyJson);
+        }
         setTimeout(window.onresize, 1000);
-        delete window.import_authorization;
-        delete window.next_parent_message_id;
-        delete window.next_conversation_id;
-        delete window.parent_message_id_last;
-        delete window.conversation_id_last;
-        delete window.authorization_last;
+        window.clearTempValues();
     } else if (args[0].includes("conversation")) {
         if (args[1].body && args[1].method === "POST") {
             //覆盖原始鉴权
@@ -214,4 +238,4 @@ window.onresize = function () {
 
 window.onresize();
 
-alert("赛博工具娘v1.1.11脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n1.移除了Logout按钮以防止误触 \r\n2. 新增「Regenerate Response」强制启用，\r\n    高负载时,重试生成按钮将不再被停用。\r\n3. 为「导入会话」增加了一些防呆判断");
+alert("赛博工具娘v1.1.13脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n\r\n1. 为清空会话、退出登录以及导入会话做了防呆设计 \r\n\r\n2. 新增oof状态重载。当服务器高负载时:\r\n   ·「Regenerate Response」将强制启用\r\n   ·  禁止登录时，可以通过加载脚本直接登录。");
