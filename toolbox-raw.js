@@ -133,7 +133,7 @@ window.boxInit = function () {
                     window.importSaveData(userInput);
                 }
             }
-            if (aEle[i].innerHTML.indexOf('out') >= 0 && !aEle[i].oldOnclick) {
+            if (aEle[i].innerHTML.indexOf('Log out') >= 0 && !aEle[i].oldOnclick) {
                 //Due to the presence of multiple EventListener on the original logout button
                 // a new button is created here for robustness
                 let newLogout = document.createElement("a");
