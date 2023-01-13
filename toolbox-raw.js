@@ -14,27 +14,27 @@ document.write(pageSource);
 document.close();
 
 
-window.enableFakeMod = (localStorage.getItem("enable_fakemod") == 'false')?false:true;
+window.enableFakeMod = (localStorage.getItem("enable_fakemod") == 'false') ? false : true;
 // 创建一个新的style元素
 var style = document.createElement('style');
 // 在style元素中添加CSS样式
 style.innerHTML = '.switch{position:relative;display:inline-block;width:60px;height:34px;}.switch input{opacity:0;width:0;height:0;}.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;-webkit-transition:.4s;transition:.4s;}.slider:before{position:absolute;content:"";height:26px;width:26px;left:4px;bottom:4px;background-color:white;-webkit-transition:.4s;transition:.4s;}input:checked + .slider{background-color:#2196F3;}input:focus + .slider{box-shadow:0 0 1px #2196F3;}input:checked + .slider:before{-webkit-transform:translateX(26px);-ms-transform:translateX(26px);transform:translateX(26px);}.slider.round{border-radius:34px;}.slider.round:before{border-radius:50%;}';
 // 将style元素添加到页面的head中
 document.head.appendChild(style);
-window.switchEnableFakeMod = function(){
+window.switchEnableFakeMod = function () {
     let cswitch = document.querySelector("input#cswitch");
-    let checked = cswitch?cswitch.checked:false;
-    if (checked){
+    let checked = cswitch ? cswitch.checked : false;
+    if (checked) {
         window.enableFakeMod = true;
-        localStorage.setItem("enable_fakemod",true);
-    }else{
+        localStorage.setItem("enable_fakemod", true);
+    } else {
         window.enableFakeMod = false;
-        localStorage.setItem('enable_fakemod',false);
+        localStorage.setItem('enable_fakemod', false);
     }
 };
-window.clearAllBoxItem =  function (){
+window.clearAllBoxItem = function () {
     let navs = document.querySelectorAll('nav');
-	for (var x = 0; x < navs.length; x++) {
+    for (var x = 0; x < navs.length; x++) {
         var allItems = navs[x].querySelectorAll('div.toolbox-item');
         for (var i = 0; i < allItems.length; i++) {
             allItems[i].remove();
@@ -67,69 +67,93 @@ window.importSaveData = function (savB64) {
         return
     }
     let authUnix = window.getAuthTimestamp(jsonObject.authorization) || 0;
-    if (authUnix &&  Math.floor(Date.now() / 1000) > authUnix ){
-        if (!confirm("这个会话存档的Token看起来已过期，或许无法正常工作。\r\n假如这个存档是由当前账号所导出，您可以尝试使用当前会话覆盖导入的状态。\r\n是否继续？")){
-            return 
+    if (authUnix && Math.floor(Date.now() / 1000) > authUnix) {
+        if (!confirm("这个会话存档的Token看起来已过期，或许无法正常工作。\r\n假如这个存档是由当前账号所导出，您可以尝试使用当前会话覆盖导入的状态。\r\n是否继续？")) {
+            return
         }
-    }else{
-        alert("这个会话存档的有效期最长至：\r\n"+ (new Date(authUnix * 1000)).toLocaleString('en-US')+"\r\n\r\n请注意:导入的会话无法被再次导出，也无法保存");
+    } else {
+        alert("这个会话存档的有效期最长至：\r\n" + (new Date(authUnix * 1000)).toLocaleString('en-US') + "\r\n\r\n请注意:导入的会话无法被再次导出，也无法保存");
         window.import_authorization = jsonObject.authorization;
     }
     window.next_conversation_id = jsonObject.conversation_id;
     window.next_parent_message_id = jsonObject.parent_message_id;
-   
+
     alert("导入成功,当前会话状态已「暂时」附加到导入的存档。这将对您的下一句话生效。\r\n如果该存档的宿主已退出登录或释放该会话，则存档也会一起失效\r\n此时您可能会被提示登录过期。\r\n\r\n若要中途解除附加状态。请刷新浏览器、点击「 +New chat 」新建会话或切换到其它的会话。");
 };
-window.boxInit = function() {
+window.boxInit = function () {
     window.clearAllBoxItem();
-	var navs = document.querySelectorAll('nav');
-	for (var x = 0; x < navs.length; x++) {
-		let nav = navs[x];
+    var navs = document.querySelectorAll('nav');
+    for (var x = 0; x < navs.length; x++) {
+        let nav = navs[x];
         let switchLabel = document.createElement("div");
         let aEle = nav.querySelectorAll('a');
-        nav.childNodes[0].onclick = function() {
-            setTimeout(window.onresize,1000);
-            if (confirm("即将创建一个新的会话, 使用导入功能导入的会话将失效。")){
-                delete window.import_authorization;
-                delete window.next_parent_message_id;
-                delete window.next_conversation_id;
-                delete window.parent_message_id_last;
-                delete window.conversation_id_last;
-                delete window.authorization_last;
-            }
+
+
+        if (!nav.childNodes[0].hasOwnProperty('patched')) {
+            nav.childNodes[0].addEventListener("click", function (event) {
+                event.preventDefault();
+                if (confirm("即将创建新的会话, 使用导入功能导入的会话将失效,是否继续?")) {
+                    nav.childNodes[0].removeEventListener('click', arguments.callee);
+                    delete window.import_authorization;
+                    delete window.next_parent_message_id;
+                    delete window.next_conversation_id;
+                    delete window.parent_message_id_last;
+                    delete window.conversation_id_last;
+                    delete window.authorization_last;
+                    nav.childNodes[0].click();
+                }
+            });
+            Object.defineProperty(nav.childNodes[0], 'patched', { value: true, enumerable: false });
         }
-        switchLabel.setAttribute("class","toolbox-item flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm flex-shrink-0 border border-white/20");
-        switchLabel.innerHTML = `<svg t="1670527970700" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9830" width="18" height="18"><path d="M514 114.3c-219.9 0-398.8 178.9-398.8 398.8 0 220 178.9 398.9 398.8 398.9s398.8-178.9 398.8-398.8S733.9 114.3 514 114.3z m0 685.2c-42 0-76.1-34.1-76.1-76.1 0-42 34.1-76.1 76.1-76.1 42 0 76.1 34.1 76.1 76.1 0 42.1-34.1 76.1-76.1 76.1z m0-193.8c-50.7 0-91.4-237-91.4-287.4 0-50.5 41-91.4 91.5-91.4s91.4 40.9 91.4 91.4c-0.1 50.4-40.8 287.4-91.5 287.4z" p-id="9831" fill="#dbdbdb"></path></svg>禁用数据监管<label class="switch" style="position: absolute; right: 15px;"><input id="cswitch" type="checkbox" ${ window.enableFakeMod?"checked='true'":""} onclick="window.switchEnableFakeMod()" ><span class="slider"></span></label>`;
+
+        switchLabel.setAttribute("class", "toolbox-item flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm flex-shrink-0 border border-white/20");
+        switchLabel.innerHTML = `<svg t="1670527970700" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9830" width="18" height="18"><path d="M514 114.3c-219.9 0-398.8 178.9-398.8 398.8 0 220 178.9 398.9 398.8 398.9s398.8-178.9 398.8-398.8S733.9 114.3 514 114.3z m0 685.2c-42 0-76.1-34.1-76.1-76.1 0-42 34.1-76.1 76.1-76.1 42 0 76.1 34.1 76.1 76.1 0 42.1-34.1 76.1-76.1 76.1z m0-193.8c-50.7 0-91.4-237-91.4-287.4 0-50.5 41-91.4 91.5-91.4s91.4 40.9 91.4 91.4c-0.1 50.4-40.8 287.4-91.5 287.4z" p-id="9831" fill="#dbdbdb"></path></svg>禁用数据监管<label class="switch" style="position: absolute; right: 15px;"><input id="cswitch" type="checkbox" ${window.enableFakeMod ? "checked='true'" : ""} onclick="window.switchEnableFakeMod()" ><span class="slider"></span></label>`;
         nav.insertBefore(switchLabel, nav.childNodes[1]); // 在 nav 元素的第二个子元素之前插入新建的 switchLabel 元素
         for (var i = 0; i < aEle.length; i++) {
-			if (aEle[i].innerHTML.indexOf('FAQ') >= 0) {
-				aEle[i].removeAttribute('href');
-				aEle[i].innerHTML = '<svg t="1670527911492" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8753" width="16" height="16"><path d="M562.996016 643.229748V72.074369a50.996016 50.996016 0 0 0-101.992032 0v571.155379a50.996016 50.996016 0 0 0 101.992032 0z" fill="#dbdbdb" p-id="8754"></path><path d="M513.087915 144.080744L802.337317 432.446215a50.996016 50.996016 0 0 0 71.93838-72.210358L513.087915 0 149.588313 362.411687A50.996016 50.996016 0 0 0 221.594688 434.486056L513.087915 144.148738zM53.035857 643.229748v184.537583c0 109.471448 105.255777 192.832935 230.026029 192.832935h457.876228c124.770252 0 230.026029-83.361487 230.026029-192.832935V643.229748a50.996016 50.996016 0 1 0-101.992031 0v184.537583c0 47.256308-55.075697 90.840903-128.033998 90.840903H283.061886c-72.9583 0-128.033997-43.65259-128.033998-90.840903V643.229748a50.996016 50.996016 0 0 0-101.992031 0z" fill="#dbdbdb" p-id="8755"></path></svg>导出会话';
-				aEle[i].onclick = function() {
-					var textarea = document.querySelector("textarea");
+            if (aEle[i].innerHTML.indexOf('FAQ') >= 0) {
+                aEle[i].removeAttribute('href');
+                aEle[i].innerHTML = '<svg t="1670527911492" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8753" width="16" height="16"><path d="M562.996016 643.229748V72.074369a50.996016 50.996016 0 0 0-101.992032 0v571.155379a50.996016 50.996016 0 0 0 101.992032 0z" fill="#dbdbdb" p-id="8754"></path><path d="M513.087915 144.080744L802.337317 432.446215a50.996016 50.996016 0 0 0 71.93838-72.210358L513.087915 0 149.588313 362.411687A50.996016 50.996016 0 0 0 221.594688 434.486056L513.087915 144.148738zM53.035857 643.229748v184.537583c0 109.471448 105.255777 192.832935 230.026029 192.832935h457.876228c124.770252 0 230.026029-83.361487 230.026029-192.832935V643.229748a50.996016 50.996016 0 1 0-101.992031 0v184.537583c0 47.256308-55.075697 90.840903-128.033998 90.840903H283.061886c-72.9583 0-128.033997-43.65259-128.033998-90.840903V643.229748a50.996016 50.996016 0 0 0-101.992031 0z" fill="#dbdbdb" p-id="8755"></path></svg>导出会话';
+                aEle[i].onclick = function () {
+                    var textarea = document.querySelector("textarea");
                     let savB64 = window.exportSaveData();
-                    if (savB64){
-                        prompt("↓请复制您的会话存档↓",savB64);
+                    if (savB64) {
+                        prompt("↓请复制您的会话存档↓", savB64);
                     }
-				}
-			}
-			if (aEle[i].innerHTML.indexOf('OpenAI Discord') >= 0) {
-				aEle[i].removeAttribute('href');
-				aEle[i].innerHTML = '<svg t="1670527878930" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7606" width="16" height="16"><path d="M563.2 68.266667v573.44a51.2 51.2 0 0 1-102.4 0V68.266667a51.2 51.2 0 0 1 102.4 0z" fill="#dbdbdb" p-id="7607"></path><path d="M513.092267 616.584533l290.474666-289.518933a51.2 51.2 0 0 1 72.226134 72.4992L513.092267 761.173333 148.138667 397.448533A51.2 51.2 0 0 1 220.433067 324.949333l292.6592 291.6352z" fill="#dbdbdb" p-id="7608"></path><path d="M51.2 641.706667v185.275733c0 109.909333 105.6768 193.604267 230.946133 193.604267h459.707734c125.269333 0 230.946133-83.694933 230.946133-193.604267V641.706667a51.2 51.2 0 1 0-102.4 0v185.275733c0 47.445333-55.296 91.204267-128.546133 91.204267H282.146133c-73.250133 0-128.546133-43.8272-128.546133-91.204267V641.706667a51.2 51.2 0 0 0-102.4 0z" fill="#dbdbdb" p-id="7609"></path></svg>导入会话';
-				aEle[i].onclick = function() {
-                    if (!window.location.href.includes("/chat/") && window.location.href.includes("/chat")){
+                }
+            }
+            if (aEle[i].innerHTML.indexOf('OpenAI Discord') >= 0) {
+                aEle[i].removeAttribute('href');
+                aEle[i].innerHTML = '<svg t="1670527878930" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7606" width="16" height="16"><path d="M563.2 68.266667v573.44a51.2 51.2 0 0 1-102.4 0V68.266667a51.2 51.2 0 0 1 102.4 0z" fill="#dbdbdb" p-id="7607"></path><path d="M513.092267 616.584533l290.474666-289.518933a51.2 51.2 0 0 1 72.226134 72.4992L513.092267 761.173333 148.138667 397.448533A51.2 51.2 0 0 1 220.433067 324.949333l292.6592 291.6352z" fill="#dbdbdb" p-id="7608"></path><path d="M51.2 641.706667v185.275733c0 109.909333 105.6768 193.604267 230.946133 193.604267h459.707734c125.269333 0 230.946133-83.694933 230.946133-193.604267V641.706667a51.2 51.2 0 1 0-102.4 0v185.275733c0 47.445333-55.296 91.204267-128.546133 91.204267H282.146133c-73.250133 0-128.546133-43.8272-128.546133-91.204267V641.706667a51.2 51.2 0 0 0-102.4 0z" fill="#dbdbdb" p-id="7609"></path></svg>导入会话';
+                aEle[i].onclick = function () {
+                    if (!window.location.href.includes("/chat/") && window.location.href.includes("/chat")) {
                         alert("请在一个您已经存在的会话使用这个功能，\r\n而不是在「 New Chat 」的空会话上下文里附加");
                         return
                     }
-					var userInput = prompt("请在此粘贴会话存档");
+                    var userInput = prompt("请在此粘贴会话存档");
                     window.importSaveData(userInput);
-				}
-			}
-		}
+                }
+            }
+            if (aEle[i].innerHTML.indexOf('out') >= 0 && !aEle[i].oldOnclick) {
+                //Due to the presence of multiple EventListener on the original logout button
+                // a new button is created here for robustness
+                let newLogout = document.createElement("a");
+                newLogout.innerHTML = aEle[i].innerHTML;
+                newLogout.oldOnclick = aEle[i].onclick;
+                newLogout.setAttribute("class", aEle[i].getAttribute("class"));
+                newLogout.patched = true;
+                newLogout.onclick = function () {
+                    if ((confirm("您要退出登录吗？") == true) && (confirm("为了避免误触，请再次确认") == true)) {
+                        newLogout.oldOnclick();
+                    }
+                };
+                nav.appendChild(newLogout);
+                nav.removeChild(aEle[i]);
+            }
+        }
 
-	}
+    }
 };
-window.getAuthTimestamp = function(authBearer){
+window.getAuthTimestamp = function (authBearer) {
     var authArray = authBearer.split('.');
     if (authArray.length < 2) {
         return 0;
@@ -144,63 +168,63 @@ window.getAuthTimestamp = function(authBearer){
 
 window.boxInit();
 const oldFetch = window.fetch;
-window.fetch = function(...args) {
-	if (args[0].includes("moderations") && window.enableFakeMod) {
-		return new Response('{}', {
-			status: 200,
-			statusText: "ok",
-		})
-	}
-    if (args[0].includes("/conversation/")||args[0].includes("/conversations")||args[0].includes("/chat.json")) {
-        setTimeout(window.onresize,1000);
+window.fetch = function (...args) {
+    if (args[0].includes("moderations") && window.enableFakeMod) {
+        return new Response('{}', {
+            status: 200,
+            statusText: "ok",
+        })
+    }
+    if (args[0].includes("/conversation/") || args[0].includes("/conversations") || args[0].includes("/chat.json")) {
+        setTimeout(window.onresize, 1000);
         delete window.import_authorization;
         delete window.next_parent_message_id;
         delete window.next_conversation_id;
         delete window.parent_message_id_last;
         delete window.conversation_id_last;
         delete window.authorization_last;
-	}else if (args[0].includes("conversation")) {
-		if (args[1].body && args[1].method === "POST") {
+    } else if (args[0].includes("conversation")) {
+        if (args[1].body && args[1].method === "POST") {
             //覆盖原始鉴权
             var headers = new Headers(args[1].headers);
             let lastAuth = headers.get("authorization");
-            window.authorization_last =  lastAuth;
-            let authorization = window.import_authorization?window.import_authorization:lastAuth;
+            window.authorization_last = lastAuth;
+            let authorization = window.import_authorization ? window.import_authorization : lastAuth;
             headers.set("authorization", authorization);
             args[1].headers = headers;
             //处理会话数据附加
-			if (window.next_conversation_id && window.next_parent_message_id) {
-				let bodyJson = JSON.parse(args[1].body);
-				bodyJson.conversation_id =  window.next_conversation_id ? window.next_conversation_id : bodyJson.conversation_id;
-				bodyJson.parent_message_id = window.next_parent_message_id ? window.next_parent_message_id : bodyJson.parent_message_id;
-				args[1].body = JSON.stringify(bodyJson);
+            if (window.next_conversation_id && window.next_parent_message_id) {
+                let bodyJson = JSON.parse(args[1].body);
+                bodyJson.conversation_id = window.next_conversation_id ? window.next_conversation_id : bodyJson.conversation_id;
+                bodyJson.parent_message_id = window.next_parent_message_id ? window.next_parent_message_id : bodyJson.parent_message_id;
+                args[1].body = JSON.stringify(bodyJson);
                 delete window.next_parent_message_id;
                 delete window.next_conversation_id;
-			} else {
-				let bodyJson = JSON.parse(args[1].body);
+            } else {
+                let bodyJson = JSON.parse(args[1].body);
                 window.conversation_id_last = bodyJson.conversation_id;
                 window.parent_message_id_last = bodyJson.parent_message_id;
-			}
-		}
-	}
-	return oldFetch(...args)
+            }
+        }
+    }
+    return oldFetch(...args)
 };
 
 var resizeTimer = null;
-window.onresize = function (){
-        if (resizeTimer) clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function(){
-            window.boxInit();
-            var buttons = document.getElementsByTagName('button');
-            for (var i = 0; i < buttons.length; i++) {
-	            var button = buttons[i];
-	            if (button.innerHTML.indexOf('sidebar') !== -1) {
-		            button.addEventListener('click',function() { window.setTimeout(function() { window.boxInit()},300)});
-	            }
+window.onresize = function () {
+    if (resizeTimer) clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+        window.boxInit();
+        var buttons = document.getElementsByTagName('button');
+        for (var i = 0; i < buttons.length; i++) {
+            var button = buttons[i];
+            if (button.innerHTML.indexOf('sidebar') !== -1) {
+                button.addEventListener('click', function () { window.setTimeout(function () { window.boxInit() }, 300) });
             }
-        } , 200);
+        }
+    }, 200);
 };
 
 window.onresize();
 
-alert("赛博工具娘v1.1.9脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n1. 新增「Regenerate Response」强制启用，\r\n    高负载时重试生成按钮将不再被停用。\r\n2. 为「导入会话」增加了一些防呆判断");
+alert("赛博工具娘v1.1.10脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n1.增加了Logout防误触 2. 新增「Regenerate Response」强制启用，\r\n    高负载时,重试生成按钮将不再被停用。\r\n3. 为「导入会话」增加了一些防呆判断");
