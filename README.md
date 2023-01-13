@@ -9,7 +9,14 @@
 
 2.会话导入导出
 
-3.「Regenerate Response」强制启用
+3.高负载限制解锁：
+
+.强制启用「Regenerate Response」
+
+.禁止登录时，解锁登录界面
+
+![oofReplaceGif](https://user-images.githubusercontent.com/3683548/212370351-92382e56-a28d-41ac-b170-d600f9a5aa09.gif)
+
 
 
 # 预览：
@@ -21,7 +28,7 @@
 
 2023-1-13
 
-. 新增oof强制覆盖。现在「Regenerate Response」即便处于「high demand」状态也可以正常使用。
+. 新增oof强制覆盖。现在，脚本加载时可以解除高负载状态的限制。例如「Regenerate Response」的禁用状态，或是登录页的高负载禁止登录。
 
 
 2022-12-22
