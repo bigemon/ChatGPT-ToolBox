@@ -11,13 +11,16 @@
 
 3.高负载限制解锁：
 
-.强制启用「Regenerate Response」
+  .强制启用「Regenerate Response」
 
-.禁止登录时，解锁登录界面
+  .禁止登录时，解锁登录界面
 
-(Gif如果无法正常播放请点击查看原图↓)
+
+
+
 ![oofReplaceGif](https://user-images.githubusercontent.com/3683548/212370351-92382e56-a28d-41ac-b170-d600f9a5aa09.gif)
 
+(↑GIF如果无法正常播放请点击查看原图↑)
 
 
 # 预览：
