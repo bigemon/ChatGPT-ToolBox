@@ -227,4 +227,4 @@ window.onresize = function () {
 
 window.onresize();
 
-alert("赛博工具娘v1.1.10脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n1.增加了Logout防误触 2. 新增「Regenerate Response」强制启用，\r\n    高负载时,重试生成按钮将不再被停用。\r\n3. 为「导入会话」增加了一些防呆判断");
+alert("赛博工具娘v1.1.10脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n1.增加了Logout防误触 \r\n2. 新增「Regenerate Response」强制启用，\r\n    高负载时,重试生成按钮将不再被停用。\r\n3. 为「导入会话」增加了一些防呆判断");
