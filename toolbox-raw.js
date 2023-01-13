@@ -134,19 +134,6 @@ window.boxInit = function () {
                 }
             }
             if (aEle[i].innerHTML.indexOf('Log out') >= 0 && !aEle[i].oldOnclick) {
-                //Due to the presence of multiple EventListener on the original logout button
-                // a new button is created here for robustness
-                let newLogout = document.createElement("a");
-                newLogout.innerHTML = aEle[i].innerHTML;
-                newLogout.oldOnclick = aEle[i].onclick;
-                newLogout.setAttribute("class", aEle[i].getAttribute("class"));
-                newLogout.patched = true;
-                newLogout.onclick = function () {
-                    if ((confirm("您要退出登录吗？") == true) && (confirm("为了避免误触，请再次确认") == true)) {
-                        newLogout.oldOnclick();
-                    }
-                };
-                nav.appendChild(newLogout);
                 nav.removeChild(aEle[i]);
             }
         }
@@ -227,4 +214,4 @@ window.onresize = function () {
 
 window.onresize();
 
-alert("赛博工具娘v1.1.10脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n1.增加了Logout防误触 \r\n2. 新增「Regenerate Response」强制启用，\r\n    高负载时,重试生成按钮将不再被停用。\r\n3. 为「导入会话」增加了一些防呆判断");
+alert("赛博工具娘v1.1.11脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n1.移除了Logout按钮以防止误触 \r\n2. 新增「Regenerate Response」强制启用，\r\n    高负载时,重试生成按钮将不再被停用。\r\n3. 为「导入会话」增加了一些防呆判断");
