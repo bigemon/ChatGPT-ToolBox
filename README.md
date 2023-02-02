@@ -79,11 +79,20 @@ https://zhuanlan.zhihu.com/p/591003498
 # 使用方法
 
 ## 脚本管理器
-由[@Haorwen](https://github.com/Haorwen)发布的加载脚本
+您可以考虑使用以下用户搬运发布的UserScript:
 
-https://greasyfork.org/zh-CN/scripts/459199-chatgpt-toolbox
+·由[@Miller-du](https://github.com/Miller-du)发布的完整加载脚本:
 
-*注意：您需要先安装任意一种用户脚本管理器(TamperMonkey等)，才能安装它
+🔗[456901-ChatGPT功能增强](https://greasyfork.org/zh-CN/scripts/456901-chatgpt%E5%8A%9F%E8%83%BD%E5%A2%9E%E5%BC%BA)
+ 
+ 
+ 
+·由[@Haorwen](https://github.com/Haorwen)发布的动态加载脚本:
+
+🔗[459199-chatgpt-toolbox](https://greasyfork.org/zh-CN/scripts/459199-chatgpt-toolbox)
+
+
+*注意：您需要先安装任意一种用户脚本(UserScript)管理器插件(例如TamperMonkey等)，才能通过链接安装它
 
 
 ## PC/MAC Chrome
