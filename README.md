@@ -2,6 +2,7 @@
 
 由ChatGPT负责编写的ChatGPT工具箱。除了向ChatGPT提供必要的数据，尽可能不由人类写任何代码。
 
+```当前版本的API混合模式可能不适合沉浸式扮演。若需要AI沉浸式催眠、扮演，请使用```:[这个项目](https://github.com/bigemon/ChuanhuChatGPT)
 
 # 功能预览
 
@@ -21,6 +22,8 @@
 - 自动引入网页上文数据          (当前设置为3000字节)
 - 可选的引导语句参数            (用于句首引导/句末自动确认)
 - API回执自动转发至网页
+
+
 
 ![1](https://user-images.githubusercontent.com/3683548/224494277-6331033e-62c7-473d-9f46-faa1912a7db3.gif)
 
@@ -78,7 +81,7 @@ https://zhuanlan.zhihu.com/p/591003498
 # 使用方法
 
 ## 脚本管理器
-您可以考虑使用以下用户搬运发布的UserScript:
+您可以考虑使用以下用户搬运发布的仓库:
 
 ·由[@Miller-du](https://github.com/Miller-du)发布的完整加载脚本:
 
@@ -91,7 +94,7 @@ https://zhuanlan.zhihu.com/p/591003498
 🔗[459199-chatgpt-toolbox](https://greasyfork.org/zh-CN/scripts/459199-chatgpt-toolbox)
 
 
-*注意：您需要先安装任意一种用户脚本(UserScript)管理器插件(例如TamperMonkey等)，才能通过链接安装它
+*注意：您需要先安装任意一种用户脚本管理器插件(例如TamperMonkey等)，才能通过链接安装它.
 
 
 ## PC/MAC Chrome
