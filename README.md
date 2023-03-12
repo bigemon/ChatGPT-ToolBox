@@ -31,9 +31,9 @@
 - 强制启用「Regenerate Response」
 - 禁止登录时，解锁登录界面
 
-![oofReplaceGif](https://user-images.githubusercontent.com/3683548/212370351-92382e56-a28d-41ac-b170-d600f9a5aa09.gif)
 
-(↑GIF如果无法正常播放请点击查看原图↑)
+![2](https://user-images.githubusercontent.com/3683548/224549102-65acb1d2-79a2-40e4-b59f-830bc4de1cd9.gif)
+
 
 
 # 🔄更新
@@ -80,7 +80,7 @@ https://zhuanlan.zhihu.com/p/591003498
 
 # 使用方法
 
-## 脚本管理器
+## 脚本管理器 
 您可以考虑使用以下用户搬运发布的仓库:
 
 ·由[@Miller-du](https://github.com/Miller-du)发布的完整加载脚本:
@@ -143,7 +143,7 @@ javascript:var pageSource=document.documentElement.outerHTML;if(pageSource.index
 1 . 复制以下代码
 
 ```
-var xhr=new XMLHttpRequest();xhr.open('GET','https://ghproxy.com/https://raw.githubusercontent.com/bigemon/ChatGPT-ToolBox/main/toolbox-chrome-bookmark.js',true);xhr.onload=function(){if(xhr.readyState===4&&xhr.status===200){eval(xhr.responseText)}};xhr.send(null);
+javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://ghproxy.com/https://raw.githubusercontent.com/bigemon/ChatGPT-ToolBox/main/toolbox-chrome-bookmark.js',true);xhr.onload=function(){if(xhr.readyState===4&&xhr.status===200){eval(xhr.responseText)}};xhr.send(null);
 ```
 
 2 . 在手机Chrome新建一个书签，黏贴并且保存
