@@ -18,11 +18,15 @@
 - 暂时只支持TXT
 
 ***GPT3.5混合接入(beta)***
+
 - 使用 `/api 聊天数据` 可在编辑、发送时调用GPT3.5 API
 - 自动引入网页上文数据          (当前设置为3000字节)
 - 可选的引导语句参数            (用于句首引导/句末自动确认)
 - API回执自动转发至网页
 
+**⚠️不在服务区的免费账号,请使用小号申请APIKey⚠️** 
+
+⚠️参见:[相关讨论](https://github.com/bigemon/ChatGPT-ToolBox/issues/24#issuecomment-1468078539)⚠️
 
 
 ![1](https://user-images.githubusercontent.com/3683548/224494277-6331033e-62c7-473d-9f46-faa1912a7db3.gif)
