@@ -7,6 +7,8 @@
 
 # 使用方法
 
+***点击以下折叠章节查阅详情***
+
 <details><summary><b>PC/MAC Chrome小书签<b></summary>
 <p>
 <br>
