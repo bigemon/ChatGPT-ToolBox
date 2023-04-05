@@ -108,8 +108,7 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://ghproxy.com/http
 
 
 # 功能预览
-
-<img width="766" alt="image" src="https://user-images.githubusercontent.com/3683548/224494734-2bca3bc3-06b4-4176-b522-55de1954b55b.png">
+<img width="669" alt="image" src="https://user-images.githubusercontent.com/3683548/230227243-88ee7be9-90a7-430e-8b7a-f4efa1c96e10.png">
 
 ***关闭数据监管***
 - 屏蔽前端警告和删除功能,减少警告信几率
@@ -118,16 +117,15 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://ghproxy.com/http
 - 用于分享当前会话上下文
 
 ***导出聊天记录***
-- 暂时只支持TXT
+- TXT聊天数据下载
 
-***WAF令牌导入 (绕过 Access denied 1020)***
-- 为Plus用户提供WAF自动保存和查看功能(避免意外退出后无法登录)
+***WAF防火墙穿透 (解除 Access denied 1020)***
+- 为Plus用户提供WAF令牌自动保存和查看功能 (避免意外退出后无法登录)
 - 无法登录时(Access denied 1020),可通过WAF令牌解锁使用
 
-⚠️ 请勿随意分享自己的WAF令牌,避免滥用 ⚠️
 ![WAFByPass](https://user-images.githubusercontent.com/3683548/230224761-add1f752-79b2-427a-97dd-17bede1ee216.gif)
 
-
+⚠️ 请勿随意分享自己的WAF令牌,避免滥用 ⚠️
 
 ***GPT3.5混合接入(beta)***
 
@@ -153,6 +151,8 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://ghproxy.com/http
 
 
 # 🔄更新
+2023-4-6
+- 新增WAFByPass功能，用于绕过Access denied 1020错误
 
 2023-3-11
 - 新增下载聊天记录功能
