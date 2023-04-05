@@ -92,6 +92,13 @@ window.clearTempValues = function () {
   delete window.authorization_last;
 };
 window.boxInit = function () {
+  unblockAccessDenied();
+  const toolboxItemDivs = document.querySelectorAll('div[class*="toolbox-item"]');
+  if (toolboxItemDivs.length > 0) {
+    // console.log("存在包含 'toolbox-item' 类名的 div 元素。");
+    return;
+  }
+  createShowPlusUIDButton();
   window.clearAllBoxItem();
   var navs = document.querySelectorAll('nav');
   for (var x = 0; x < navs.length; x++) {
@@ -113,7 +120,7 @@ window.boxInit = function () {
     }
 
     switchLabel.setAttribute("class", "toolbox-item flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm flex-shrink-0 border border-white/20");
-    switchLabel.innerHTML = `<svg t="1670527970700" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9830" width="18" height="18"><path d="M514 114.3c-219.9 0-398.8 178.9-398.8 398.8 0 220 178.9 398.9 398.8 398.9s398.8-178.9 398.8-398.8S733.9 114.3 514 114.3z m0 685.2c-42 0-76.1-34.1-76.1-76.1 0-42 34.1-76.1 76.1-76.1 42 0 76.1 34.1 76.1 76.1 0 42.1-34.1 76.1-76.1 76.1z m0-193.8c-50.7 0-91.4-237-91.4-287.4 0-50.5 41-91.4 91.5-91.4s91.4 40.9 91.4 91.4c-0.1 50.4-40.8 287.4-91.5 287.4z" p-id="9831" fill="#dbdbdb"></path></svg>禁用数据监管<label class="switch" style="position: absolute; right: 15px;"><input id="cswitch" type="checkbox" ${window.enableFakeMod ? "checked='true'" : ""} onclick="window.switchEnableFakeMod()" ><span class="slider"></span></label>` ;
+    switchLabel.innerHTML = `<svg t="1670527970700" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9830" width="18" height="18"><path d="M514 114.3c-219.9 0-398.8 178.9-398.8 398.8 0 220 178.9 398.9 398.8 398.9s398.8-178.9 398.8-398.8S733.9 114.3 514 114.3z m0 685.2c-42 0-76.1-34.1-76.1-76.1 0-42 34.1-76.1 76.1-76.1 42 0 76.1 34.1 76.1 76.1 0 42.1-34.1 76.1-76.1 76.1z m0-193.8c-50.7 0-91.4-237-91.4-287.4 0-50.5 41-91.4 91.5-91.4s91.4 40.9 91.4 91.4c-0.1 50.4-40.8 287.4-91.5 287.4z" p-id="9831" fill="#dbdbdb"></path></svg>禁用数据监管<label class="switch"><input id="cswitch" type="checkbox" ${window.enableFakeMod ? "checked='true'" : ""} onclick="window.switchEnableFakeMod()" ><span class="slider"></span></label>` ;
     nav.insertBefore(switchLabel, nav.childNodes[1]); // 在 nav 元素的第二个子元素之前插入新建的 switchLabel 元素
 
 
@@ -534,25 +541,28 @@ window.LoadAPITemplateWindow = function () {
   overlay.style.top = '0';
   overlay.style.left = '0';
   overlay.style.width = '100%';
-  overlay.style.height = '100%';
+  overlay.style.height = '100vh';
   overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+  overlay.style.zIndex = '9998';
+  overlay.style.overflow = 'scroll';
   document.body.appendChild(overlay);
 
 
   // 创建编辑框
   const form = document.createElement('form');
   form.style.position = 'absolute';
-  form.style.top = '50%';
+  form.style.top = '40%';
   form.style.left = '50%';
   form.style.transform = 'translate(-50%, -50%)';
   form.style.backgroundColor = '#fff';
-  form.style.padding = '20px';
+  // form.style.padding = '20px';
   form.style.borderRadius = '5px';
   form.style.width = '80%';
+  form.style.height = '80%';
   overlay.appendChild(form);
 
   // 创建标题元素
-  const title = document.createElement('h2');
+  const title = document.createElement('h4');
   title.innerHTML = '设置API模板';
   title.style.textAlign = 'center';
   title.style.setProperty('color', '#808080', 'important');
@@ -562,6 +572,7 @@ window.LoadAPITemplateWindow = function () {
   // 创建输入框和标签
   const apiKeyLabel = document.createElement('label');
   apiKeyLabel.innerText = '🗝API Key';
+  apiKeyLabel.style.color = '#666';
   const link = document.createElement('a');
   link.href = 'https://platform.openai.com/account/api-keys';
   link.innerText = '申请APIKey';
@@ -578,7 +589,8 @@ window.LoadAPITemplateWindow = function () {
   form.appendChild(apiKeyInput);
 
   const guideLabel = document.createElement('label');
-  guideLabel.innerText = '👶系统预设引导词(设定AI的使命、关注点、姓名等)';
+  guideLabel.innerText = '👶系统预设(基础设定)';
+  guideLabel.style.color = '#666';
   form.appendChild(guideLabel);
 
   const guideInput = document.createElement('input');
@@ -590,6 +602,7 @@ window.LoadAPITemplateWindow = function () {
   //###### 前置引导 ########
   const userPromptLabel = document.createElement('label');
   userPromptLabel.innerText = '用户输入';
+  userPromptLabel.style.color = '#666';
   // form.appendChild(userPromptLabel);
 
   const userPromptInput = document.createElement('input');
@@ -600,6 +613,7 @@ window.LoadAPITemplateWindow = function () {
 
   const aiResponseLabel = document.createElement('label');
   aiResponseLabel.innerText = 'AI回复';
+  aiResponseLabel.style.color = '#666';
   // form.appendChild(aiResponseLabel);
 
   const aiResponseInput = document.createElement('input');
@@ -609,20 +623,13 @@ window.LoadAPITemplateWindow = function () {
   // form.appendChild(aiResponseInput);
 
   form.appendChild(
-    createBootstrapPanel("☝️前置引导 - 通过问答示范引导语气/风格 (可选)", [userPromptLabel, userPromptInput, aiResponseLabel, aiResponseInput])
+    createBootstrapPanel("☝️前置引导-通过问答引导风格(可选)", [userPromptLabel, userPromptInput, aiResponseLabel, aiResponseInput])
   );
-
-
-  const chatContext = document.createElement('label');
-  chatContext.innerText = '{ 网页上的前文和您的新指令会出现在这个位置 } ';
-  chatContext.className = 'form-control mb-3';
-  // chatContext.style.setProperty('font-size', '28px', 'important');
-  chatContext.style.setProperty('color', '#FF4500', 'important');
-  form.appendChild(chatContext);
 
   //######## 后置引导 ##########
   const aiPromptLabel = document.createElement('label');
   aiPromptLabel.innerText = 'AI询问Prompts';
+  aiPromptLabel.style.color = '#666';
   // form.appendChild(aiPromptLabel);
 
   const aiPromptInput = document.createElement('input');
@@ -633,6 +640,7 @@ window.LoadAPITemplateWindow = function () {
 
   const userResponseLabel = document.createElement('label');
   userResponseLabel.innerText = '用户确认Prompts';
+  userResponseLabel.style.color = '#666';
   // form.appendChild(userResponseLabel);
 
   const userResponseInput = document.createElement('input');
@@ -642,13 +650,13 @@ window.LoadAPITemplateWindow = function () {
   // form.appendChild(userResponseInput);
 
   form.appendChild(
-    createBootstrapPanel("😈后置诱导 - 追加虚拟问答,实现能力解放 (可选)", [aiPromptLabel, aiPromptInput, userResponseLabel, userResponseInput])
+    createBootstrapPanel("😈后置诱导-追加确认问答,解放能力(可选)", [aiPromptLabel, aiPromptInput, userResponseLabel, userResponseInput])
   );
 
   // 创建保存和关闭按钮
   const closeButton = document.createElement('button');
   closeButton.className = 'btn btn-danger';
-  closeButton.innerHTML = 'Close';
+  closeButton.innerHTML = '关闭';
   closeButton.type = 'button'; // 将 type 属性设置为 button
   closeButton.style.setProperty('float', 'right', 'important');
   closeButton.style.setProperty('background-color', '#dc3545', 'important');
@@ -657,7 +665,7 @@ window.LoadAPITemplateWindow = function () {
 
   const saveButton = document.createElement('button');
   saveButton.className = 'btn btn-success';
-  saveButton.innerHTML = 'Save';
+  saveButton.innerHTML = '保存';
   saveButton.type = 'button'; // 将 type 属性设置为 button
   saveButton.style.setProperty('float', 'left', 'important');
   saveButton.style.setProperty('background-color', '#28a745', 'important');
@@ -863,11 +871,132 @@ function downloadTextFile(text, filename) {
   document.body.removeChild(a);
 }
 
+//将一个cookie转存到localstorage
+function saveCookieToLocalStorage(cookiename) {
+  var cookies = document.cookie.split("; "); // 获取当前页面生效的所有cookie
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i].split("=");
+    if (cookie[0] === cookiename) { // 如果存在一个名为"_puid"的cookie
+      localStorage.setItem(cookiename, cookie[1]); // 存入localStorage中
+      break;
+    }
+  }
+}
+
+//createShowPlusUIDButton 显示puid
+function createShowPlusUIDButton() {
+  const regex = /bg-yellow-200/g;
+  const spans = document.getElementsByTagName("span");
+  
+  for (let i = 0; i < spans.length; i++) {
+    const span = spans[i];
+    if (span.className.match(regex) && !span.getAttribute("id")) {
+      console.log("Found the element:", span);
+  
+      // 生成唯一的ID
+      const id = `my-custom-id-${i}`;
+  
+      // 给匹配的span元素设置唯一的ID
+      span.setAttribute("id", id);
+  
+      const button = document.createElement("button");
+      button.textContent = "查看WAF令牌";
+  
+      // 获取匹配的span元素的样式
+      const style = window.getComputedStyle(span);
+  
+      // 将匹配的样式应用到按钮上
+      Object.assign(button.style, {
+        backgroundColor: style.backgroundColor,
+        color: style.color,
+        padding: style.padding,
+        fontSize: style.fontSize,
+        borderRadius: style.borderRadius,
+        textTransform: style.textTransform
+      });
+  
+      button.addEventListener("click", function() {
+        const defaultValue = document.cookie.replace(
+          /(?:(?:^|.*;\s*)_puid\s*\=\s*([^;]*).*$)|^.*$/,
+          "$1"
+        );
+        const input = prompt("您的WAF令牌如下：", defaultValue);
+        // console.log("复制的内容为：", input);
+      });
+  
+      span.parentNode.insertBefore(button, span.nextSibling);
+    }
+  }
+  
+
+}
+
+//unblockAccessDenied 为禁止访问页面添加解锁选项
+function unblockAccessDenied() {
+  const unblockH1 = document.querySelectorAll('h1[class*="unblock"]');
+  if (unblockH1.length > 0) {
+    // 已经存在则放弃继续操作
+    return;
+  }
+  // 查找页面中的 h1 元素
+  const h1Element = document.querySelector('h1');
+
+  // 如果 h1 元素存在并且内容为 "Access denied"，则执行以下操作
+  if (h1Element && h1Element.innerText === 'Access denied') {
+    h1Element.classList.add('unblock');
+    // 创建一个 div 元素作为编辑框和按钮的容器
+    const containerElement = document.createElement('div');
+    containerElement.style.cssText = 'display: flex; justify-content: center; align-items: center; flex-direction: column; width: 100%; height: 100px; background-color: #8e8ea0; position: absolute; top: 0; left: 0;';
+
+    // 创建一个 h2 元素作为标题，并设置样式
+    const titleElement = document.createElement('h2');
+    titleElement.innerText = '输入WAF令牌解锁封禁';
+    titleElement.style.cssText = 'text-align: center; margin: 0;';
+
+    // 创建一个 div 元素作为输入框和按钮的容器
+    const inputWrapperElement = document.createElement('div');
+    inputWrapperElement.style.cssText = 'display: flex; align-items: center; margin-top: 10px;';
+
+    // 从本地存储中读取名为 "foo" 的数据，并作为输入框的值
+    const inputValue = localStorage.getItem('_puid') || '';
+    // 创建一个 input 元素作为编辑框
+    const inputElement = document.createElement('input');
+    inputElement.type = 'text';
+    inputElement.value = inputValue;
+
+    // 创建一个 button 元素作为按钮
+    const buttonElement = document.createElement('button');
+    buttonElement.innerText = '解锁';
+    buttonElement.style.verticalAlign = 'middle';
+
+    // 当按钮被点击时，将 input 数据存入 cookie 中，并刷新页面
+    buttonElement.addEventListener('click', function () {
+      const inputValue = inputElement.value;
+      document.cookie = `_puid=${inputValue}; domain=.openai.com; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/`;
+      // localStorage.setItem('_puid', inputValue); // 将输入框的值存储到本地存储中
+      alert('已应用,[确定]后刷新页面');
+      location.reload();
+    });
+
+    // 把输入框和按钮添加到容器中
+    inputWrapperElement.appendChild(inputElement);
+    inputWrapperElement.appendChild(buttonElement);
+
+    // 把标题和输入框、按钮容器添加到容器中
+    containerElement.appendChild(titleElement);
+    containerElement.appendChild(inputWrapperElement);
+
+    // 把容器添加到页面的 body 元素中
+    document.body.appendChild(containerElement);
+  }
+
+}
+
 window.createSaveChatLog = function () {
   // 检查是否已经存在按钮元素
   const existingButton = document.querySelector(".save-chat-button");
   if (existingButton) {
-    console.log("按钮已经存在，不需要创建");
+    // console.log("按钮已经存在，不需要创建");
   } else {
     // 创建按钮元素
     const button = document.createElement("div");
@@ -932,4 +1061,6 @@ function mergeMessages(apiTemplate, history, newMessage) {
 
 window.InitCSS();
 window.createSaveChatLog();
-alert("赛博工具娘v1.2.2脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n\r\n1. 增加GPT3.5API支持(beta)\r\n2. 暂时移除/chat页面的oof重载\r\n3. 在页面右下角增加了一个下载聊天记录的按钮");
+saveCookieToLocalStorage('_puid');
+setInterval(window.boxInit, 1000);
+alert("赛博工具娘v1.3.1脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n\r\n1. 追加绕过'Access denied'的功能\r\n2. 修复前端错误");
