@@ -49,7 +49,7 @@ window.exportSaveData = function () {
   var authorization = window.authorization_last;
   if (conversation_id == "" || parent_message_id == "" || conversation_id == "undefined" || parent_message_id == "undefined") {
     alert("请至少说两句话再使用这个功能!");
-    return ;
+    return;
   }
   var jsonObject = {
     conversation_id: conversation_id,
@@ -92,13 +92,13 @@ window.clearTempValues = function () {
   delete window.authorization_last;
 };
 window.boxInit = function () {
+  createShowPlusUIDButton();
   unblockAccessDenied();
   const toolboxItemDivs = document.querySelectorAll('div[class*="toolbox-item"]');
   if (toolboxItemDivs.length > 0) {
     // console.log("存在包含 'toolbox-item' 类名的 div 元素。");
     return;
   }
-  createShowPlusUIDButton();
   window.clearAllBoxItem();
   var navs = document.querySelectorAll('nav');
   for (var x = 0; x < navs.length; x++) {
@@ -106,21 +106,23 @@ window.boxInit = function () {
     let switchLabel = document.createElement("div");
     let aEle = nav.querySelectorAll('a');
 
-
     if (!nav.childNodes[0].hasOwnProperty('patched')) {
-      nav.childNodes[0].addEventListener("click", function (event) {
-        event.preventDefault();
-        if (confirm("即将创建新的会话, 使用导入功能导入的会话将失效,是否继续?")) {
-          nav.childNodes[0].removeEventListener('click', arguments.callee);
-          window.clearTempValues();
-          nav.childNodes[0].click();
-        }
-      });
+      nav.childNodes[0].addEventListener("click", handleNewChatClick);
       Object.defineProperty(nav.childNodes[0], 'patched', { value: true, enumerable: false });
     }
+    
+    function handleNewChatClick(event) {
+      event.preventDefault();
+      if (confirm("创建新的会话后, 使用导入功能导入的会话将失效,是否继续?")) {
+        nav.childNodes[0].removeEventListener('click', handleNewChatClick);
+        window.clearTempValues();
+        nav.childNodes[0].click();
+      }
+    }
+    
 
     switchLabel.setAttribute("class", "toolbox-item flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm flex-shrink-0 border border-white/20");
-    switchLabel.innerHTML = `<svg t="1670527970700" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9830" width="18" height="18"><path d="M514 114.3c-219.9 0-398.8 178.9-398.8 398.8 0 220 178.9 398.9 398.8 398.9s398.8-178.9 398.8-398.8S733.9 114.3 514 114.3z m0 685.2c-42 0-76.1-34.1-76.1-76.1 0-42 34.1-76.1 76.1-76.1 42 0 76.1 34.1 76.1 76.1 0 42.1-34.1 76.1-76.1 76.1z m0-193.8c-50.7 0-91.4-237-91.4-287.4 0-50.5 41-91.4 91.5-91.4s91.4 40.9 91.4 91.4c-0.1 50.4-40.8 287.4-91.5 287.4z" p-id="9831" fill="#dbdbdb"></path></svg>禁用数据监管<label class="switch"><input id="cswitch" type="checkbox" ${window.enableFakeMod ? "checked='true'" : ""} onclick="window.switchEnableFakeMod()" ><span class="slider"></span></label>` ;
+    switchLabel.innerHTML = `<svg t="1670527970700" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9830" width="18" height="18"><path d="M514 114.3c-219.9 0-398.8 178.9-398.8 398.8 0 220 178.9 398.9 398.8 398.9s398.8-178.9 398.8-398.8S733.9 114.3 514 114.3z m0 685.2c-42 0-76.1-34.1-76.1-76.1 0-42 34.1-76.1 76.1-76.1 42 0 76.1 34.1 76.1 76.1 0 42.1-34.1 76.1-76.1 76.1z m0-193.8c-50.7 0-91.4-237-91.4-287.4 0-50.5 41-91.4 91.5-91.4s91.4 40.9 91.4 91.4c-0.1 50.4-40.8 287.4-91.5 287.4z" p-id="9831" fill="#dbdbdb"></path></svg>禁用数据监管<label class="switch"><input id="cswitch" type="checkbox" ${window.enableFakeMod ? "checked='true'" : ""} onclick="window.switchEnableFakeMod()" ><span class="slider"></span></label>`;
     nav.insertBefore(switchLabel, nav.childNodes[1]); // 在 nav 元素的第二个子元素之前插入新建的 switchLabel 元素
 
 
@@ -166,21 +168,6 @@ window.boxInit = function () {
       LoadAPITemplateWindow();
     };
     nav.insertBefore(importExportLabel, nav.childNodes[1]);
-
-
-    for (var i = 0; i < aEle.length; i++) {
-      if (!nav.childNodes[0].hasOwnProperty('patched')) {
-        nav.childNodes[0].addEventListener("click", function (event) {
-          event.preventDefault();
-          if (confirm("即将创建新的会话, 使用导入功能导入的会话将失效,是否继续?")) {
-            nav.childNodes[0].removeEventListener('click', arguments.callee);
-            window.clearTempValues();
-            nav.childNodes[0].click();
-          }
-        });
-        Object.defineProperty(nav.childNodes[0], 'patched', { value: true, enumerable: false });
-      }
-    }
 
   }
 };
@@ -243,11 +230,11 @@ window.fetch = async function (...args) {
           const matchedDivs = document.querySelectorAll('div[class*="min-h-"][class*="flex"][class*="items-start"][class*="gap-"][class*="whitespace-pre-wrap"]');
           if (matchedDivs.length >= 2) {
             if (matchedDivs.length == 2) {
-               alert("若在第一句话就使用API，则可能会观察到数据回滚。\r\n建议您刷新页面/切换会话后,再进行后续的对话。");
+              alert("若在第一句话就使用API，则可能会观察到数据回滚。\r\n建议您刷新页面/切换会话后,再进行后续的对话。");
             }
             matchedDivs[matchedDivs.length - 2].innerText = jsonObj.messages[0].content.parts[0];
           }
-        }else{
+        } else {
           return new Response('{}', {
             status: 500,
             statusText: "error",
@@ -308,6 +295,8 @@ window.sendAPI = async function (newMsg) {
   // 从localStorage中读取api-template字段的值
   const apiTemplateValue = localStorage.getItem('api-template');
   if (!apiTemplateValue) {
+    alert('您尚未设置API_KEY,请先打开设置窗口设置');
+    LoadAPITemplateWindow();
     return '';
   }
   // 尝试反序列化apiTemplateValue
@@ -321,6 +310,7 @@ window.sendAPI = async function (newMsg) {
   if (!apiTemplate.apiKey || apiTemplate.apiKey === "") {
     console.error('用户未设置api_key,忽略');
     alert('您尚未设置API_KEY,请先打开设置窗口设置');
+    LoadAPITemplateWindow();
     return '';
   }
 
@@ -531,7 +521,7 @@ window.LoadAPITemplateWindow = function () {
   const oldOverlayDiv = document.getElementById('overlay-api');
   // 检查是否找到div
   if (oldOverlayDiv !== null) {
-    return ;//找到就直接返回,不继续创建
+    return;//找到就直接返回,不继续创建
   }
 
   // 创建半透明覆盖层
@@ -809,7 +799,7 @@ window.fillTextAndSubmit = function (inputText) {
   if (textareas.length > 0) {
     textareas[0].value = inputText;
   } else {
-    return ;
+    return;
   }
 
   const button = document.querySelector('[class*="absolute"][class*="rounded-md"][class*="bottom-"][class*="right-"][class*="disabled"]');
@@ -887,24 +877,24 @@ function saveCookieToLocalStorage(cookiename) {
 function createShowPlusUIDButton() {
   const regex = /bg-yellow-200/g;
   const spans = document.getElementsByTagName("span");
-  
+
   for (let i = 0; i < spans.length; i++) {
     const span = spans[i];
-    if (span.className.match(regex) && !span.getAttribute("id")) {
+    if (span.className.match(regex) && !span.getAttribute("id") && (span.textContent.trim().toLowerCase() === "plus")) {
       console.log("Found the element:", span);
-  
+
       // 生成唯一的ID
       const id = `my-custom-id-${i}`;
-  
+
       // 给匹配的span元素设置唯一的ID
       span.setAttribute("id", id);
-  
+
       const button = document.createElement("button");
       button.textContent = "查看WAF令牌";
-  
+
       // 获取匹配的span元素的样式
       const style = window.getComputedStyle(span);
-  
+
       // 将匹配的样式应用到按钮上
       Object.assign(button.style, {
         backgroundColor: style.backgroundColor,
@@ -914,8 +904,8 @@ function createShowPlusUIDButton() {
         borderRadius: style.borderRadius,
         textTransform: style.textTransform
       });
-  
-      button.addEventListener("click", function() {
+
+      button.addEventListener("click", function () {
         const defaultValue = document.cookie.replace(
           /(?:(?:^|.*;\s*)_puid\s*\=\s*([^;]*).*$)|^.*$/,
           "$1"
@@ -923,11 +913,11 @@ function createShowPlusUIDButton() {
         const input = prompt("您的WAF令牌如下：", defaultValue);
         // console.log("复制的内容为：", input);
       });
-  
+
       span.parentNode.insertBefore(button, span.nextSibling);
     }
   }
-  
+
 
 }
 
@@ -993,6 +983,17 @@ function unblockAccessDenied() {
 }
 
 window.createSaveChatLog = function () {
+  // 获取当前页面的URL,只有在聊天界面才创建下载记录按钮
+  const currentPageUrl = window.location.href;
+  // 定义匹配模式的正则表达式 https://chat.openai.com/chat
+  const chatUrlPattern = /^https?:\/\/chat\.openai\.com\/chat(\/.*)?$/;
+  // 使用正则表达式测试当前页面的URL
+  const isChatUrl = chatUrlPattern.test(currentPageUrl);
+  // 根据测试结果输出不同的消息
+  if (!isChatUrl) {
+    return
+  }
+
   // 检查是否已经存在按钮元素
   const existingButton = document.querySelector(".save-chat-button");
   if (existingButton) {
@@ -1063,4 +1064,4 @@ window.InitCSS();
 window.createSaveChatLog();
 saveCookieToLocalStorage('_puid');
 setInterval(window.boxInit, 1000);
-alert("赛博工具娘v1.3.1脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n\r\n1. 追加绕过'Access denied'的功能\r\n2. 修复前端错误");
+alert("赛博工具娘v1.3.2脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n\r\n1. 追加绕过'Access denied(1020)'的功能\r\n2. (又)修复了前端错误");
