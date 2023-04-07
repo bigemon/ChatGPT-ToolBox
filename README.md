@@ -4,6 +4,9 @@
 
 ```当前版本的API混合模式可能不适合沉浸式扮演。若需要AI沉浸式催眠、扮演，请使用```:[这个项目](https://github.com/bigemon/ChuanhuChatGPT)
 
+⚠️近日ghproxy在大陆地区受到不明原因的严重阻断⚠️
+
+⚠️现已将脚本镜像指向gitmirror，请注意更新小书签⚠️
 
 # 使用方法
 
