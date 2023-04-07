@@ -93,7 +93,9 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.co
 
 ⚠️注意：您需要先安装任意一种用户脚本管理器插件(例如TamperMonkey等)，才能通过链接安装它。
 
-**从本仓库拉取**
+<br>
+
+***1.从本仓库拉取***
 
 您可以通过以下链接,从本仓库安装最新的脚本:
 
@@ -107,7 +109,9 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.co
 
 由于精力有限，无法保证在其它环境下的兼容性。此外，由于网络封锁，大陆地区用户拉取时，可能会受到阻断。
 
-**第三方仓库**
+<br>
+
+***2.第三方仓库***
 
 您也可以考虑使用以下用户搬运发布的脚本仓库:
 
