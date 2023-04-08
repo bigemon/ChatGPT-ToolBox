@@ -215,5 +215,16 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.co
 
 https://zhuanlan.zhihu.com/p/591003498
 
+# 其它贡献
+相关讨论
+- [Cyan](https://github.com/Chinese-Cyq20100313)在初期版本提供了不少测试和修订意见。
 
+镜像提供
+- [GHProxy](https://ghproxy.com/)
+- [GitMirror](https://gitmirror.com/)
+
+
+UserScript
+- [Miller-du](https://github.com/Miller-du)进行了早期用户脚本的移植与兼容性测试
+- [Haorwen](https://github.com/Haorwen)在弃坑前曾试图维护动态加载的版本
 
