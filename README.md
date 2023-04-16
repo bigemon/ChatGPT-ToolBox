@@ -4,9 +4,9 @@
 
 ```当前版本的API混合模式可能不适合沉浸式扮演。若需要AI沉浸式催眠、扮演，请使用```:[这个项目](https://github.com/bigemon/ChuanhuChatGPT)
 
-⚠️近日ghproxy在大陆地区受到不明原因的严重阻断⚠️
-
 ⚠️现已将脚本镜像指向gitmirror，请注意更新小书签⚠️
+
+🪦 **WAFByPass 已于4月16日失效** 🪦
 
 # 使用方法
 
@@ -143,12 +143,10 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.co
 - TXT聊天数据下载
 
 ***WAF防火墙穿透 (解除 Access denied 1020)***
-- 为Plus用户提供WAF令牌自动保存和查看功能 (避免意外退出后无法登录)
-- 无法登录时(Access denied 1020),可通过WAF令牌解锁使用
+- 🪦 **WAFByPass 已于4月16日失效,等待其它方案** 🪦
+- ~~为Plus用户提供WAF令牌自动保存和查看功能 (避免意外退出后无法登录)~~
+- ~~无法登录时(Access denied 1020),可通过WAF令牌解锁使用~~
 
-![WAFByPass](https://user-images.githubusercontent.com/3683548/230224761-add1f752-79b2-427a-97dd-17bede1ee216.gif)
-
-⚠️ 请勿随意分享自己的WAF令牌,避免滥用 ⚠️
 
 ***GPT3.5混合接入(beta)***
 
@@ -174,8 +172,10 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.co
 
 
 # 🔄更新
+
 2023-4-6
-- 新增WAFByPass功能，用于绕过Access denied 1020错误
+
+~~新增WAFByPass功能，用于绕过Access denied 1020错误 (已于4月16日失效)~~
 
 2023-3-11
 - 新增下载聊天记录功能
