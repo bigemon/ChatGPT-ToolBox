@@ -170,8 +170,8 @@ function dispose(_alert) {
             // 找到具有id为“importSession”的按钮,为按钮设置单击事件处理程序
             let importButton = importExportLabel.querySelector('#importSession');
             importButton.onclick = function () {
-                if (!window.location.href.includes("/chat/") && window.location.href.includes("/chat")) {
-                    alert("请在一个您已经存在的会话使用这个功能，\r\n而不是在「 New Chat 」的空会话上下文里附加");
+                if (!window.location.href.includes("chat.openai.com/c/")) {
+                    alert("请在一个您已经存在的会话里使用这个功能，\r\n而不是在「 New Chat 」的空会话上下文里附加");
                     return
                 }
                 var userInput = prompt("请在此粘贴会话存档");
@@ -332,7 +332,7 @@ function dispose(_alert) {
         }
 
         //获取历史聊天记录，限4000字节
-        var msgHistory = generateOutputArrayWithMaxLength('div[class*="w-[calc(100%"]', 99, 4000);
+        var msgHistory = generateOutputArrayWithMaxLength('div.text-base', 99, 4000);
         console.info("msgHistory:", msgHistory);
         if (msgHistory.length >= 2) {
             msgHistory.splice(-2);//移除最后两个
@@ -342,16 +342,14 @@ function dispose(_alert) {
         let msgs = mergeMessages(apiTemplate, msgHistory, newMsg);
         let res = await window.openaiChatCompletionsP(msgs, apiTemplate.apiKey);
         console.info("res:", res);
+        if (res && res.error && res.error.message) {
+            alert(`API返回错误信息:\r\n ${res.error.message}`);
+        }
         console.info("content:", res?.choices?.[0]?.message?.[0]?.content ?? '');
         return res?.choices?.[0]?.message?.content ?? '';
     };
 
     window.openaiChatCompletions = function (message, api_key) {
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${api_key}`
-        };
-
         const data = {
             model: 'gpt-3.5-turbo',
             messages: message
@@ -835,16 +833,21 @@ function dispose(_alert) {
         }
         matchedDivs.forEach((div, idx) => {
             if (idx >= startIdx) {
-                const hasFlexBetweenChild = div.querySelector('div.flex.justify-between') !== null;
-                const flexBetweenDiv = div.querySelector('div.flex.justify-between');
-                const hasChild = flexBetweenDiv && flexBetweenDiv.children.length > 0;
-                const text = div.textContent.trim();
-                let role = hasChild ? "assistant" : "user";
-                results.push({ role, content: text });
+                // 检查是否包含类名为 "rounded-sm" 的 img 元素
+                const roundedSmImg = div.querySelector('img.rounded-sm');
+
+                // 提取目标内容
+                const targetTextDiv = div.querySelector('div.items-start');
+                const targetText = targetTextDiv.textContent.trim();
+
+                // 根据是否找到 "rounded-sm" 的 img 元素来确定角色（"user" 或 "assistant"），并将结果推送到结果数组中
+                let role = roundedSmImg ? "user" : "assistant";
+                results.push({ role, content: targetText });
             }
         });
         return results;
     }
+
     //生成指定限制数量和字数长度的会话数组
     function generateOutputArrayWithMaxLength(selector, num = 0, maxLength = Infinity) {
         const outputArray = generateOutputArray(selector, num);
@@ -1003,7 +1006,7 @@ function dispose(_alert) {
         // 获取当前页面的URL,只有在聊天界面才创建下载记录按钮
         const currentPageUrl = window.location.href;
         // 定义匹配模式的正则表达式 https://chat.openai.com/chat
-        const chatUrlPattern = /^https?:\/\/chat\.openai\.com\/chat(\/.*)?$/;
+        const chatUrlPattern = /^https?:\/\/chat\.openai\.com(\/c\/.*)?$/;
         // 使用正则表达式测试当前页面的URL
         const isChatUrl = chatUrlPattern.test(currentPageUrl);
         // 根据测试结果输出不同的消息
@@ -1044,7 +1047,7 @@ function dispose(_alert) {
 
             // 给按钮添加点击事件
             button.addEventListener("click", function () {
-                const outArray = generateOutputArrayWithMaxLength('div[class*="w-[calc(100%"]', 999, 10000000);
+                const outArray = generateOutputArrayWithMaxLength('div.text-base', 999, 10000000);
                 const outputText = formatOutputArray(outArray);
                 downloadTextFile(outputText, document.title + ".txt");
             });
@@ -1081,7 +1084,8 @@ function dispose(_alert) {
     window.createSaveChatLog();
     saveCookieToLocalStorage('_puid');
     setInterval(window.boxInit, 1000);
-    _alert("赛博工具娘v1.3.2脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n\r\n1. 追加绕过'Access denied(1020)'的功能\r\n2. (又)修复了前端错误");
+    _alert("赛博工具娘v1.3.3脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n\r\n1. 适配新版本前端页面 \r\n2. API调用时若发生错误，现在会弹出错误信息\r\n\r\n * 因WAF配置升级,WAFByPass目前已失效\r\n");
+
 }
 
 (function () {
