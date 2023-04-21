@@ -1067,4 +1067,13 @@ window.InitCSS();
 window.createSaveChatLog();
 saveCookieToLocalStorage('_puid');
 setInterval(window.boxInit, 1000);
-alert("赛博工具娘v1.3.3脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n\r\n1. 适配新版本前端页面 \r\n2. API调用时若发生错误，现在会弹出错误信息\r\n\r\n * 因WAF配置升级,WAFByPass目前已失效\r\n");
+//页面防过期
+setInterval(function() {
+  fetch('https://chat.openai.com/')
+    .then(response => {
+        response.text();
+    })
+    .catch(error => console.error(error));
+}, 10000);
+
+alert("赛博工具娘v1.3.4脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n\r\n1. 适配新版本前端页面 \r\n2. API调用时若发生错误，现在会弹出错误信息\r\n3.新增连接维持 ( 减少An error occured )\r\n\r\n * 因WAF配置升级,WAFByPass目前已失效\r\n");
