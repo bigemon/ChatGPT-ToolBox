@@ -110,7 +110,7 @@ window.boxInit = function () {
       nav.childNodes[0].addEventListener("click", handleNewChatClick);
       Object.defineProperty(nav.childNodes[0], 'patched', { value: true, enumerable: false });
     }
-    
+
     function handleNewChatClick(event) {
       event.preventDefault();
       if (confirm("创建新的会话后, 使用导入功能导入的会话将失效,是否继续?")) {
@@ -119,7 +119,7 @@ window.boxInit = function () {
         nav.childNodes[0].click();
       }
     }
-    
+
 
     switchLabel.setAttribute("class", "toolbox-item flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm flex-shrink-0 border border-white/20");
     switchLabel.innerHTML = `<svg t="1670527970700" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9830" width="18" height="18"><path d="M514 114.3c-219.9 0-398.8 178.9-398.8 398.8 0 220 178.9 398.9 398.8 398.9s398.8-178.9 398.8-398.8S733.9 114.3 514 114.3z m0 685.2c-42 0-76.1-34.1-76.1-76.1 0-42 34.1-76.1 76.1-76.1 42 0 76.1 34.1 76.1 76.1 0 42.1-34.1 76.1-76.1 76.1z m0-193.8c-50.7 0-91.4-237-91.4-287.4 0-50.5 41-91.4 91.5-91.4s91.4 40.9 91.4 91.4c-0.1 50.4-40.8 287.4-91.5 287.4z" p-id="9831" fill="#dbdbdb"></path></svg>禁用数据监管<label class="switch"><input id="cswitch" type="checkbox" ${window.enableFakeMod ? "checked='true'" : ""} onclick="window.switchEnableFakeMod()" ><span class="slider"></span></label>`;
@@ -818,11 +818,11 @@ function generateOutputArray(selector, num = 0) {
     if (idx >= startIdx) {
       // 检查是否包含类名为 "rounded-sm" 的 img 元素
       const roundedSmImg = div.querySelector('img.rounded-sm');
-      
+
       // 提取目标内容
       const targetTextDiv = div.querySelector('div.items-start');
       const targetText = targetTextDiv.textContent.trim();
-      
+
       // 根据是否找到 "rounded-sm" 的 img 元素来确定角色（"user" 或 "assistant"），并将结果推送到结果数组中
       let role = roundedSmImg ? "user" : "assistant";
       results.push({ role, content: targetText });
@@ -1140,19 +1140,23 @@ window.createSaveChatLog();
 saveCookieToLocalStorage('_puid');
 setInterval(window.boxInit, 1000);
 //页面防过期
-setInterval(function() {
-  if (!window.__NEXT_DATA__){ //不是聊天界面
+setInterval(function () {
+  if (!window.__NEXT_DATA__) { //不是聊天界面
     return;
   }
   fetch('https://chat.openai.com/')
     .then(response => {
+      if (response.status === 200) {
         response.text();
         breatheBorder();
+      } else {
+        throw new Error('Status code not 200');
+      }
     })
     .catch(error => {
       console.error(error);
-      breatheBorder('rgba(255, 0, 0, 0.8)',true,"连接中断"); // 指定颜色
+      breatheBorder('rgba(255, 0, 0, 0.8)', true, "连接中断"); // 指定颜色
     });
 }, 10000);
 
-alert("v1.3.6脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n\r\n· 新增连接维持 ( 减少网络错误,避免频繁刷新 )\r\n· 适配新版本前端页面 \r\n· API调用时若发生错误，现在会弹出错误信息\r\n\r\n * 因WAF配置升级,WAFByPass目前已失效\r\n");
+alert("v1.3.7脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n\r\n· 新增连接维持 ( 减少网络错误,避免频繁刷新 )\r\n· 适配新版本前端页面 \r\n· API调用时若发生错误，现在会弹出错误信息\r\n\r\n * 因WAF配置升级,WAFByPass目前已失效\r\n");
