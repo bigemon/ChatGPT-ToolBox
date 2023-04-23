@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         ChatGPT功能增强
 // @namespace    http://tampermonkey.net/
-// @version      1.3.5
-// @description  目前功能：1.关闭数据监管；2.会话导入导出；3.高负载限制解锁 4.混合接入API(GPT3.5) 5.链接维持 ( 减少An error occured )
+// @version      1.3.6
+// @description  目前功能：1.关闭数据监管；2.会话导入导出；3.高负载限制解锁 4.混合接入API(GPT3.5) 5.链接维持 ( 减少An error occured ) 6.聊天记录下载
 // @author       bigemon; 捈荼
 // @match        https://chat.openai.com/*
 // @icon         https://chat.openai.com/favicon.ico
@@ -1158,6 +1158,9 @@ function dispose(_alert) {
     setInterval(window.boxInit, 1000);
     //页面防过期
     setInterval(function () {
+        if (!window.__NEXT_DATA__){ //不是聊天界面
+            return;
+        }
         fetch('https://chat.openai.com/')
             .then(response => {
                 response.text();
@@ -1169,7 +1172,7 @@ function dispose(_alert) {
             });
     }, 10000);
 
-    _alert("v1.3.5脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n\r\n· 新增连接维持 ( 减少网络错误,避免频繁刷新 )\r\n· 适配新版本前端页面 \r\n· API调用时若发生错误，现在会弹出错误信息\r\n\r\n * 因WAF配置升级,WAFByPass目前已失效\r\n");
+    _alert("v1.3.6脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n\r\n· 新增连接维持 ( 减少网络错误,避免频繁刷新 )\r\n· 适配新版本前端页面 \r\n· API调用时若发生错误，现在会弹出错误信息\r\n\r\n * 因WAF配置升级,WAFByPass目前已失效\r\n");
 
 
 }
