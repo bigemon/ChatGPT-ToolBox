@@ -4,9 +4,13 @@
 
 ```当前版本的API混合模式可能不适合沉浸式扮演。若需要AI沉浸式催眠、扮演，请使用```:[这个项目](https://github.com/bigemon/ChuanhuChatGPT)
 
-⚠️现已将脚本镜像指向gitmirror，请注意更新小书签⚠️
 
-🪦 **WAFByPass 已于4月16日失效** 🪦
+⚠️ 现已将脚本镜像指向gitmirror，请注意更新
+
+✅ **新增链路维持功能,减少网络错误**
+
+🪦 **WAFByPass 已于4月16日失效**
+
 
 # 使用方法
 
@@ -133,6 +137,9 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.co
 # 功能预览
 <img width="669" alt="image" src="https://user-images.githubusercontent.com/3683548/230227243-88ee7be9-90a7-430e-8b7a-f4efa1c96e10.png">
 
+***🆕自动链路维持***
+- 通过后台维持数据连接,减少网络错误,避免频繁刷新页面
+
 ***关闭数据监管***
 - 屏蔽前端警告和删除功能,减少警告信几率
 
@@ -174,7 +181,7 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.co
 # 🔄更新
 
 2023-4-21
-- 新增链接维持(减少An error occured)
+- 新增链接维持功能(减少各类网络错误,避免频繁刷新页面)
 
 2023-4-6
 
