@@ -1062,6 +1062,78 @@ function mergeMessages(apiTemplate, history, newMessage) {
   return mergedArray;
 }
 
+function breatheBorder(color = 'rgba(0, 128, 0, 0.7)', stayLit = false, watermark = '') {
+  // 删除旧的呼吸边框（如果存在）
+  const oldBorder = document.getElementById("breathe-border");
+  if (oldBorder) {
+    document.body.removeChild(oldBorder);
+  }
+
+  // 删除旧的水印（如果存在）
+  const oldWatermark = document.getElementById("breathe-watermark");
+  if (oldWatermark) {
+    document.body.removeChild(oldWatermark);
+  }
+
+  // 创建一个 div 元素作为边框
+  const border = document.createElement("div");
+  border.id = "breathe-border";
+  border.style.position = "fixed";
+  border.style.top = "0";
+  border.style.left = "0";
+  border.style.width = "100%";
+  border.style.height = "100%";
+  border.style.border = `4px solid ${color}`;
+  border.style.borderRadius = "10px";
+  border.style.boxSizing = "border-box";
+  border.style.opacity = "0";
+  border.style.pointerEvents = "none";
+  document.body.appendChild(border);
+
+  // 创建一个 div 元素作为水印
+  if (watermark !== '') {
+    const watermarkEl = document.createElement('div');
+    watermarkEl.id = 'breathe-watermark';
+    watermarkEl.style.position = 'absolute';
+    watermarkEl.style.top = '10px';
+    watermarkEl.style.right = '10px';
+    watermarkEl.style.fontSize = '20px';
+    watermarkEl.style.fontFamily = 'Arial, Helvetica, sans-serif';
+    watermarkEl.style.color = color;
+    watermarkEl.style.pointerEvents = 'none';
+    watermarkEl.textContent = watermark;
+    document.body.appendChild(watermarkEl);
+  }
+
+  // 定义呼吸动画的函数
+  function animate() {
+    // 设置初始不透明度为 0，进行渐入动画
+    border.style.opacity = "0";
+    border.style.transition = "opacity 1s ease-in-out";
+    border.offsetHeight; // 强制刷新
+
+    // 将边框的不透明度从 0 到 0.7 渐变
+    border.style.transition = "opacity 1s ease-in-out";
+    border.style.opacity = "0.7";
+
+    // 在呼吸动画完成后，如果 stayLit 参数为 true，则保持亮着的状态
+    // 否则将边框的不透明度从 0.7 到 0 渐变
+    setTimeout(() => {
+      if (!stayLit) {
+        border.style.transition = "opacity 1s ease-in-out";
+        border.style.opacity = "0";
+      }
+    }, 1000);
+  }
+  // 启动呼吸动画
+  animate();
+  // 如果 stayLit 参数为 true，则不要在动画完成后将边框隐藏
+  if (stayLit) {
+    border.addEventListener("animationiteration", animate);
+  }
+}
+
+
 
 window.InitCSS();
 window.createSaveChatLog();
@@ -1072,8 +1144,12 @@ setInterval(function() {
   fetch('https://chat.openai.com/')
     .then(response => {
         response.text();
+        breatheBorder();
     })
-    .catch(error => console.error(error));
+    .catch(error => {
+      console.error(error);
+      breatheBorder('rgba(255, 0, 0, 0.8)',true,"连接中断"); // 指定颜色
+    });
 }, 10000);
 
-alert("赛博工具娘v1.3.4脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n\r\n1. 适配新版本前端页面 \r\n2. API调用时若发生错误，现在会弹出错误信息\r\n3.新增连接维持 ( 减少An error occured )\r\n\r\n * 因WAF配置升级,WAFByPass目前已失效\r\n");
+alert("v1.3.5脚本已启用。本工具由ChatGPT在指导下生成~\r\n\r\n更新:\r\n\r\n· 新增连接维持 ( 减少网络错误,避免频繁刷新 )\r\n· 适配新版本前端页面 \r\n· API调用时若发生错误，现在会弹出错误信息\r\n\r\n * 因WAF配置升级,WAFByPass目前已失效\r\n");
