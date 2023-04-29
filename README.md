@@ -9,7 +9,7 @@
 
 ✅ **新增链路维持功能,减少网络错误**
 
-🪦 **WAFByPass 已于4月16日失效**
+🪦 **WAFBypass 已于4月16日失效**
 
 
 # 使用方法
@@ -110,7 +110,7 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.co
 
 ## 脚本管理器
 
-⚠️注意：您需要先安装任意一种用户脚本管理器插件(例如TamperMonkey等)，才能通过链接安装它。
+⚠️注意：您需要先安装任意一种用户脚本管理器插件(例如Tampermonkey等)，才能通过链接安装它。
 
 <br>
 
@@ -162,7 +162,7 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.co
 - TXT聊天数据下载
 
 ***WAF防火墙穿透 (解除 Access denied 1020)***
-- 🪦 **WAFByPass 已于4月16日失效,等待其它方案** 🪦
+- 🪦 **WAFBypass 已于4月16日失效,等待其它方案** 🪦
 - ~~为Plus用户提供WAF令牌自动保存和查看功能 (避免意外退出后无法登录)~~
 - ~~无法登录时(Access denied 1020),可通过WAF令牌解锁使用~~
 
@@ -197,7 +197,7 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.co
 
 2023-4-6
 
-~~新增WAFByPass功能，用于绕过Access denied 1020错误 (已于4月16日失效)~~
+~~新增WAFBypass功能，用于绕过Access denied 1020错误 (已于4月16日失效)~~
 
 2023-3-11
 - 新增下载聊天记录功能
