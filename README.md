@@ -2,10 +2,10 @@
 
 由ChatGPT负责编写的ChatGPT工具箱。除了向ChatGPT提供必要的数据，尽可能不由人类写任何代码。
 
-```当前版本的API混合模式可能不适合沉浸式扮演。若需要AI沉浸式催眠、扮演，请使用```:[这个项目](https://github.com/bigemon/ChuanhuChatGPT)
+**_当前版本的API混合模式可能不适合沉浸式扮演。若需要AI沉浸式催眠、扮演，请使用_**: [这个项目](https://github.com/bigemon/ChuanhuChatGPT)
 
 
-⚠️ 现已将脚本镜像指向gitmirror，请注意更新
+⚠️ 现已将脚本镜像指向 gitmirror，请注意更新
 
 ✅ **新增链路维持功能,减少网络错误**
 
@@ -58,7 +58,7 @@ javascript:var pageSource=document.documentElement.outerHTML;if(pageSource.index
 
 
 
-3 . 在ChatGPT聊天界面点击这个书签，即可激活(远端拉取版本需要等待1~5秒)
+3 . 在 ChatGPT 聊天界面点击这个书签，即可激活(远端拉取版本可能需要等待1~5秒)
 
 <img width="1150" alt="image" src="https://user-images.githubusercontent.com/3683548/207087766-46563180-b562-44c6-9b5e-4b25804e30e4.png">
 
