@@ -16,7 +16,8 @@
 
 ***点击以下折叠章节查阅详情***
 
-<details><summary><b>PC/MAC Chrome小书签<b></summary>
+<details>
+<summary><b>PC/MAC Chrome小书签</b></summary>
 <p>
 <br>
 
@@ -42,6 +43,8 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.githubuserco
 javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.com/bigemon/ChatGPT-ToolBox/main/toolbox-raw.js',true);xhr.onload=function(){if(xhr.readyState===4&&xhr.status===200){eval(xhr.responseText)}};xhr.send(null);
 ```
 
+[拖动以收藏](javascript:var%20xhr=new%20XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.com/bigemon/ChatGPT-ToolBox/main/toolbox-raw.js',true);xhr.onload=function(){if(xhr.readyState===4&&xhr.status===200){eval(xhr.responseText)}};xhr.send(null);)
+
 
 ↓↓ 如果在您访问以上脚本感觉很慢,您也可以直接把下面这个完整JS保存到你的书签里运行 ( 仅限桌面端Chrome ) 。
 完整脚本不需要加载时间，***但是没有自动更新*** , 因此需要手动更新版本
@@ -52,7 +55,7 @@ javascript:var pageSource=document.documentElement.outerHTML;if(pageSource.index
 ```
 
 
-2 . 添加一个新的书签，删除所有地址url，黏贴上去并且保存。
+2 . 添加一个新的书签，删除所有地址 URL，粘贴上去并且保存。
 
 <img width="508" alt="image" src="https://user-images.githubusercontent.com/3683548/207085565-7b2598c1-4db1-44d3-961e-143cf089a27a.png">
 
@@ -68,7 +71,7 @@ javascript:var pageSource=document.documentElement.outerHTML;if(pageSource.index
 
 
 
-<details><summary><b>移动端 Chrome小书签 使用指南<b></summary>
+<details><summary><b>移动端 Chrome小书签 使用指南</b></summary>
 <p><br>
 
 ## 移动端 Chrome小书签 使用指南
@@ -105,7 +108,7 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.co
 
 
 
-<details><summary><b>脚本管理器<b></summary>
+<details><summary><b>脚本管理器</b></summary>
 <p><br>
 
 ## 脚本管理器
