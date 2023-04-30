@@ -43,8 +43,7 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.githubuserco
 javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.com/bigemon/ChatGPT-ToolBox/main/toolbox-raw.js',true);xhr.onload=function(){if(xhr.readyState===4&&xhr.status===200){eval(xhr.responseText)}};xhr.send(null);
 ```
 
-[拖动以收藏](javascript:var%20xhr=new%20XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.com/bigemon/ChatGPT-ToolBox/main/toolbox-raw.js',true);xhr.onload=function(){if(xhr.readyState===4&&xhr.status===200){eval(xhr.responseText)}};xhr.send(null);)
-
+[拖动以收藏]("javascript:var%20xhr=new%20XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.com/bigemon/ChatGPT-ToolBox/main/toolbox-raw.js',true);xhr.onload=function(){if(xhr.readyState===4&&xhr.status===200){eval(xhr.responseText)}};xhr.send(null);")
 
 ↓↓ 如果在您访问以上脚本感觉很慢,您也可以直接把下面这个完整JS保存到你的书签里运行 ( 仅限桌面端Chrome ) 。
 完整脚本不需要加载时间，***但是没有自动更新*** , 因此需要手动更新版本
