@@ -691,7 +691,9 @@ window.getAuthTimestamp = function (authBearer) {
 };
 
 window.boxInit();
-const oldFetch = window.fetch;
+if (window.oldFetch === undefined) {
+    window.oldFetch = window.fetch;
+}
 window.fetch = async function (...args) {
     if (args[0].includes("moderations") && window.enableFakeMod) {
         return new Response('{}', {
@@ -775,7 +777,7 @@ window.fetch = async function (...args) {
             }
         }
     }
-    return oldFetch(...args);
+    return window.oldFetch(...args);
 };
 
 window.openaiChatCompletionsP = async function (message, api_key) {
