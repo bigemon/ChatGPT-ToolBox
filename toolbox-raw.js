@@ -822,7 +822,7 @@ window.sendAPI = async function (newMsg) {
     }
 
     //获取历史聊天记录，限4000字节
-    var msgHistory = generateOutputArrayWithMaxLength('div.text-base', 99, 4000);
+    let msgHistory = generateOutputArrayWithMaxLength('div.text-base', 99, 4000);
     console.info("msgHistory:", msgHistory);
     if (msgHistory.length >= 2) {
         msgHistory.splice(-2);//移除最后两个
@@ -855,14 +855,14 @@ window.openaiChatCompletions = function (message, api_key) {
 };
 
 
-var resizeTimer = null;
+let resizeTimer = null;
 window.onresize = function () {
     if (resizeTimer) clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function () {
         window.boxInit();
-        var buttons = document.getElementsByTagName('button');
-        for (var i = 0; i < buttons.length; i++) {
-            var button = buttons[i];
+        let buttons = document.getElementsByTagName('button');
+        for (let i = 0; i < buttons.length; i++) {
+            let button = buttons[i];
             if (button.innerHTML.indexOf('sidebar') !== -1) {
                 button.addEventListener('click', function () {
                     window.setTimeout(function () {
@@ -956,9 +956,9 @@ function downloadTextFile(text, filename) {
 
 //将一个cookie转存到localstorage
 function saveCookieToLocalStorage(cookiename) {
-    var cookies = document.cookie.split("; "); // 获取当前页面生效的所有cookie
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i].split("=");
+    let cookies = document.cookie.split("; "); // 获取当前页面生效的所有cookie
+    for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].split("=");
         if (cookie[0] === cookiename) { // 如果存在一个名为"_puid"的cookie
             localStorage.setItem(cookiename, cookie[1]); // 存入localStorage中
             break;
