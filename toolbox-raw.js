@@ -214,7 +214,6 @@ window.InitCSS = function () {
 //LoadAPITemplateWindow 载入API模板配置窗口
 window.LoadAPITemplateWindow = function () {
     function createBootstrapCard(title, controls) {
-
         const card = document.createElement("div")
         card.className = "bg-white rounded-md mb-4"
 
