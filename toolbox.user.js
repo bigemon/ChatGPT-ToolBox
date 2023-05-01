@@ -7,7 +7,7 @@
 // @match        https://chat.openai.com/*
 // @icon         https://chat.openai.com/favicon.ico
 // @license      GPL-3.0
-// @run-at       document-idie
+// @run-at       document-idle
 // @updateURL    https://raw.gitmirror.com/bigemon/ChatGPT-ToolBox/main/toolbox.user.js
 // @downloadURL  https://raw.gitmirror.com/bigemon/ChatGPT-ToolBox/main/toolbox.user.js
 // @grant none
