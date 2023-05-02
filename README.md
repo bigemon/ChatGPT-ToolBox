@@ -2,21 +2,22 @@
 
 由ChatGPT负责编写的ChatGPT工具箱。除了向ChatGPT提供必要的数据，尽可能不由人类写任何代码。
 
-```当前版本的API混合模式可能不适合沉浸式扮演。若需要AI沉浸式催眠、扮演，请使用```:[这个项目](https://github.com/bigemon/ChuanhuChatGPT)
+**_当前版本的API混合模式可能不适合沉浸式扮演。若需要AI沉浸式催眠、扮演，请使用_**: [这个项目](https://github.com/bigemon/ChuanhuChatGPT)
 
 
-⚠️ 现已将脚本镜像指向gitmirror，请注意更新
+⚠️ 现已将脚本镜像指向 gitmirror，请注意更新
 
 ✅ **新增链路维持功能,减少网络错误**
 
-🪦 **WAFByPass 已于4月16日失效**
+🪦 **WAFBypass 已于4月16日失效**
 
 
 # 使用方法
 
 ***点击以下折叠章节查阅详情***
 
-<details><summary><b>PC/MAC Chrome小书签<b></summary>
+<details>
+<summary><b>PC/MAC Chrome小书签</b></summary>
 <p>
 <br>
 
@@ -42,7 +43,6 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.githubuserco
 javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.com/bigemon/ChatGPT-ToolBox/main/toolbox-raw.js',true);xhr.onload=function(){if(xhr.readyState===4&&xhr.status===200){eval(xhr.responseText)}};xhr.send(null);
 ```
 
-
 ↓↓ 如果在您访问以上脚本感觉很慢,您也可以直接把下面这个完整JS保存到你的书签里运行 ( 仅限桌面端Chrome ) 。
 完整脚本不需要加载时间，***但是没有自动更新*** , 因此需要手动更新版本
 
@@ -52,13 +52,13 @@ javascript:var pageSource=document.documentElement.outerHTML;if(pageSource.index
 ```
 
 
-2 . 添加一个新的书签，删除所有地址url，黏贴上去并且保存。
+2 . 添加一个新的书签，删除所有地址 URL，粘贴上去并且保存。
 
 <img width="508" alt="image" src="https://user-images.githubusercontent.com/3683548/207085565-7b2598c1-4db1-44d3-961e-143cf089a27a.png">
 
 
 
-3 . 在ChatGPT聊天界面点击这个书签，即可激活(远端拉取版本需要等待1~5秒)
+3 . 在 ChatGPT 聊天界面点击这个书签，即可激活(远端拉取版本可能需要等待1~5秒)
 
 <img width="1150" alt="image" src="https://user-images.githubusercontent.com/3683548/207087766-46563180-b562-44c6-9b5e-4b25804e30e4.png">
 
@@ -68,7 +68,7 @@ javascript:var pageSource=document.documentElement.outerHTML;if(pageSource.index
 
 
 
-<details><summary><b>移动端 Chrome小书签 使用指南<b></summary>
+<details><summary><b>移动端 Chrome小书签 使用指南</b></summary>
 <p><br>
 
 ## 移动端 Chrome小书签 使用指南
@@ -105,12 +105,12 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.co
 
 
 
-<details><summary><b>脚本管理器<b></summary>
+<details><summary><b>脚本管理器</b></summary>
 <p><br>
 
 ## 脚本管理器
 
-⚠️注意：您需要先安装任意一种用户脚本管理器插件(例如TamperMonkey等)，才能通过链接安装它。
+⚠️注意：您需要先安装任意一种用户脚本管理器插件(例如Tampermonkey等)，才能通过链接安装它。
 
 <br>
 
@@ -162,7 +162,7 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.co
 - TXT聊天数据下载
 
 ***WAF防火墙穿透 (解除 Access denied 1020)***
-- 🪦 **WAFByPass 已于4月16日失效,等待其它方案** 🪦
+- 🪦 **WAFBypass 已于4月16日失效,等待其它方案** 🪦
 - ~~为Plus用户提供WAF令牌自动保存和查看功能 (避免意外退出后无法登录)~~
 - ~~无法登录时(Access denied 1020),可通过WAF令牌解锁使用~~
 
@@ -197,7 +197,7 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.co
 
 2023-4-6
 
-~~新增WAFByPass功能，用于绕过Access denied 1020错误 (已于4月16日失效)~~
+~~新增WAFBypass功能，用于绕过Access denied 1020错误 (已于4月16日失效)~~
 
 2023-3-11
 - 新增下载聊天记录功能
