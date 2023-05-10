@@ -215,7 +215,7 @@ window.InitCSS = function () {
 window.LoadAPITemplateWindow = function () {
     function createBootstrapCard(title, controls) {
         const card = document.createElement("div")
-        card.className = "bg-white rounded-md mb-4"
+        card.className = "rounded-md mb-4"
 
         const cardHeader = document.createElement("div")
         cardHeader.className = "flex items-center relative text-white bg-green-600 px-4 py-2 text-xs font-sans justify-between rounded-t-md"
