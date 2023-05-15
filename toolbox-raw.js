@@ -1009,24 +1009,11 @@ function createShowPlusUIDButton() {
             const button = document.createElement("button");
             button.textContent = "查看WAF令牌";
 
-            // 获取匹配的span元素的样式
-            const style = window.getComputedStyle(span);
-
-            // 将匹配的样式应用到按钮上
-            Object.assign(button.style, {
-                backgroundColor: style.backgroundColor,
-                color: style.color,
-                padding: style.padding,
-                fontSize: style.fontSize,
-                borderRadius: style.borderRadius,
-                textTransform: style.textTransform
-            });
+            //将匹配的类名应用到按钮上
+            button.className = span.className;
 
             button.addEventListener("click", function () {
-                const defaultValue = document.cookie.replace(
-                    /(?:^|.*;\s*)_puid\s*=\s*([^;]*).*$|^.*$/,
-                    "$1"
-                );
+                const defaultValue = document.cookie.replace(/(?:^|.*;\s*)_puid\s*=\s*([^;]*).*$|^.*$/, "$1");
                 prompt("您的WAF令牌如下：", defaultValue);
                 // const input = prompt("您的WAF令牌如下：", defaultValue);
                 // console.log("复制的内容为：", input);
@@ -1035,8 +1022,6 @@ function createShowPlusUIDButton() {
             span.parentNode.insertBefore(button, span.nextSibling);
         }
     }
-
-
 }
 
 //unblockAccessDenied 为禁止访问页面添加解锁选项
@@ -1141,6 +1126,19 @@ function connectionIndicator(color = 'rgba(0, 128, 0, 0.7)', stayLit = false, wa
     indicatorContainer.style.display = "flex"; // 使其内部的元素在一行显示
     indicatorContainer.style.alignItems = "center"; // 居中对齐
     document.body.appendChild(indicatorContainer);
+
+    // 在媒体查询中修改元素的样式
+    const mediaQuery = window.matchMedia("(max-width: 767px)"); // 600px 是一种常见的手机屏幕宽度阈值，你可以根据需要调整
+    function handleDeviceChange(e) {
+        if (e.matches) { // 如果媒体查询条件匹配，则表示设备是手机
+            indicatorContainer.style.top = "50px"; // 移动到顶栏下方，你需要根据实际的顶栏高度进行调整
+        } else { // 如果媒体查询条件不匹配，则表示设备是PC
+            indicatorContainer.style.top = "10px"; // 恢复原位置
+        }
+    }
+
+    mediaQuery.addListener(handleDeviceChange);
+    handleDeviceChange(mediaQuery); // 初始化时检查设备类型
 
     // 创建一个 div 元素显示状态文本
     const statusText = document.createElement('div');
