@@ -629,6 +629,11 @@ window.boxInit = function () {
     }
     window.clearAllBoxItem();
     let navs = document.querySelectorAll('nav');
+    // console.log(navs.length);
+
+    if (navs.length > 1) {
+        navs = [navs[0]];
+    }
     for (let x = 0; x < navs.length; x++) {
         let nav = navs[x];
         let switchLabel = document.createElement("div");
