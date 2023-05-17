@@ -4,12 +4,9 @@
 
 **_当前版本的API混合模式可能不适合沉浸式扮演。若需要AI沉浸式催眠、扮演，请使用_**: [这个项目](https://github.com/bigemon/ChuanhuChatGPT)
 
-
 ⚠️ 现已将脚本镜像指向 gitmirror，请注意更新
 
-✅ **新增链路维持功能,减少网络错误**
-
-🪦 **WAFBypass 已于4月16日失效**
+🔄 2023 5-17 : [屏蔽监管] 已适配 May 12 Version
 
 
 # 使用方法
@@ -149,7 +146,7 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.co
 # 功能预览
 <img width="669" alt="image" src="https://user-images.githubusercontent.com/3683548/230227243-88ee7be9-90a7-430e-8b7a-f4efa1c96e10.png">
 
-***🆕自动链路维持***
+***自动链路维持***
 - 通过后台维持数据连接,减少网络错误,避免频繁刷新页面
 
 ***关闭数据监管***
@@ -239,16 +236,17 @@ javascript:var xhr=new XMLHttpRequest();xhr.open('GET','https://raw.gitmirror.co
 
 https://zhuanlan.zhihu.com/p/591003498
 
-# 其它贡献
-相关讨论
-- [Cyan](https://github.com/Chinese-Cyq20100313)在初期版本提供了不少测试和修订意见。
+# 贡献
 
-镜像提供
+<a href="https://github.com/bigemon/ChatGPT-ToolBox/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=bigemon/ChatGPT-ToolBox" />
+</a>
+
+### 镜像提供
 - [GHProxy](https://ghproxy.com/)
 - [GitMirror](https://gitmirror.com/)
 
-
-UserScript
-- [Miller-du](https://github.com/Miller-du)进行了早期用户脚本的移植与兼容性测试
-- [Haorwen](https://github.com/Haorwen)在弃坑前曾试图维护动态加载的版本
+### UserScript
+- [Miller-du](https://github.com/Miller-du) 进行了早期用户脚本的移植与兼容性测试
+- [Haorwen](https://github.com/Haorwen) 早期曾试图维护动态加载的版本
 
