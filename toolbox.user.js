@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatGPT功能增强
 // @namespace    http://tampermonkey.net/
-// @version      1.4.1
+// @version      1.4.2
 // @description  目前功能：1.关闭数据监管；2.会话导入导出；3.高负载限制解锁 4.混合接入API(GPT3.5) 5.链接维持 ( 减少An error occured ) 6.聊天记录下载
 // @author       bigemon; 捈荼; Cyan
 // @match        https://chat.openai.com/*
