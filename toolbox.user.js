@@ -723,8 +723,7 @@ setInterval(function(){
         if (args[0].includes("models")) {
             if (response.body) { // 检查返回码是否为200
                 const obj = await response.json(); // 反序列化为对象
-                if (obj.categories && obj.categories.length > 1) { // 检查obj.categories是否存在
-
+                if (obj.categories) { // 检查obj.categories是否存在
                     // 复制最后一个item
                     const lastItem = JSON.parse(JSON.stringify(obj.categories[obj.categories.length - 1]));
                     //将复制的category增加"(mobile)"尾缀
