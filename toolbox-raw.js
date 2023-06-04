@@ -705,7 +705,7 @@ setInterval(function(){
     
         //模型Patch
         if (args[0].includes("models")) {
-            if (response.body && (localStorage.getItem("enable_gpt4_mobile") === 'true') ) { // 检查返回码是否为200
+            if (response.body && (localStorage.getItem("enable_gpt4_mobile") !== 'false') ) { // 检查返回码是否为200
                 window.modelsPatched = true; //如果是使用油猴脚本等较高优先级场合，models替换成功后就不需要手动触发了。
                 const obj = await response.json(); // 反序列化为对象
                 if (obj.categories) { // 检查obj.categories是否存在
