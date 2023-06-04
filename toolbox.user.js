@@ -515,7 +515,6 @@ window.createSaveChatLog = function () {
 window.boxInit = function () {
     window.createSaveChatLog();
     patch_oof();
-    createEnableGPT4MobileSwitch();
     unblockAccessDenied();
     const toolboxItemDivs = document.querySelectorAll('div[class*="toolbox-item"]');
     if (toolboxItemDivs.length > 0) {
@@ -662,7 +661,7 @@ setInterval(function(){
                     jsonObj.model = "gpt-4-mobile";
                     args[1].body = JSON.stringify(jsonObj);
                 }
-    
+
                 if (regex.test(message)) {
                     const result = message.replace(regex, '$1');
                     console.log("发现API调用", result); // 输出："get-user-info"
@@ -692,7 +691,7 @@ setInterval(function(){
                 } else {
                     // console.log(message); // 输出："/api get-user-info"
                 }
-    
+
                 //覆盖原始鉴权
                 let headers = new Headers(args[1].headers);
                 let lastAuth = headers.get("authorization");
@@ -715,31 +714,32 @@ setInterval(function(){
                 }
             }
         }
-    
+
         //New Hook For ChatGPT May 12 Version
         // 使用原始的 fetch 函数获取 Response
         const response = await window.oldFetch.apply(this, args);
-    
+
         //模型Patch
         if (args[0].includes("models")) {
-            if (response.body && (localStorage.getItem("enable_gpt4_mobile") !== 'false') ) { // 检查返回码是否为200
-                window.modelsPatched = true; //如果是使用油猴脚本等较高优先级场合，models替换成功后就不需要手动触发了。
+            if (response.body) { // 检查返回码是否为200
                 const obj = await response.json(); // 反序列化为对象
                 if (obj.categories) { // 检查obj.categories是否存在
-                    obj.categories = obj.categories.map(item => {
-                        // 为每个item的category增加"(mobile)"尾缀
-                        if (item.category) {
-                            item.human_category_name += "(mobile)";
-                        }
-    
-                        // 为每个item的"default_model"属性增加"-mobile"尾缀，如果"mobile"字符串不存在
-                        if (item.default_model && !item.default_model.includes("mobile")) {
-                            item.default_model += "-mobile";
-                        }
-    
-                        return item;
-                    });
-    
+
+                    // 复制最后一个item
+                    const lastItem = JSON.parse(JSON.stringify(obj.categories[obj.categories.length - 1]));
+                    //将复制的category增加"(mobile)"尾缀
+                    lastItem.human_category_name += "(mobile)";
+                    // 将复制的"default_model"属性增加"-mobile"尾缀，如果"mobile"字符串不存在
+                    if (lastItem.default_model && !lastItem.default_model.includes("mobile")) {
+                        lastItem.default_model += "-mobile";
+                    }
+                    // 删除不需要的属性
+                    delete lastItem.browsing_model;
+                    delete lastItem.code_interpreter_model;
+                    delete lastItem.plugins_model;
+                    // 将复制的item添加
+                    obj.categories.push(lastItem);
+
                     // 创建一个新的 Response 对象，内容为修改后的 JSON
                     const newBody = JSON.stringify(obj);
                     return new Response(newBody, {
@@ -750,8 +750,8 @@ setInterval(function(){
                 }
             }
         }
-    
-    
+
+
         // 判断是否是流式响应
         if (response.body && response.body instanceof ReadableStream && response.headers.get('content-type').indexOf('event-stream') != -1) {
             // 如果是流式响应，使用一个新的 ReadableStream
@@ -760,25 +760,25 @@ setInterval(function(){
                     const reader = response.body.getReader();
                     const decoder = new TextDecoder();
                     let buffer = '';
-    
+
                     function push() {
                         reader.read().then(({ done, value }) => {
                             // 将读取到的 Uint8Array 数据解码为字符串
                             buffer += decoder.decode(value, { stream: true });
-    
+
                             // 以2次换行符作为每次截断
                             let linebreakIndex;
                             while ((linebreakIndex = buffer.indexOf('\n\n')) >= 0) {
                                 const line = buffer.slice(0, linebreakIndex + 1);
                                 buffer = buffer.slice(linebreakIndex + 1);
-    
+
                                 // 对每行数据进行处理
                                 const modifiedLine = processData(line);
-    
+
                                 // 将处理后的数据放入流中
                                 controller.enqueue(new TextEncoder().encode(modifiedLine + '\n\n'));
                             }
-    
+
                             // 判断是否已经读取完数据
                             if (done) {
                                 // 如果 buffer 中还有数据，也需要进行处理
@@ -789,16 +789,16 @@ setInterval(function(){
                                 controller.close();
                                 return;
                             }
-    
+
                             // 继续读取下一块数据
                             push();
                         });
                     }
-    
+
                     push();
                 }
             });
-    
+
             // 返回一个新的 Response 对象，body 为处理后的数据流
             return new Response(modifiedStream, {
                 headers: response.headers,
@@ -806,11 +806,11 @@ setInterval(function(){
                 statusText: response.statusText,
             });
         }
-    
+
         // 不是流式响应，直接返回原始 Response
         return response;
     };
-    
+
 },50);
 
 
@@ -1032,63 +1032,6 @@ function saveCookieToLocalStorage(cookiename) {
             localStorage.setItem(cookiename, cookie[1]); // 存入localStorage中
             break;
         }
-    }
-}
-
-//createEnableGPT4MobileSwitch 创建GPT4-Mobile开关
-function createEnableGPT4MobileSwitch() {
-    const regex = /bg-yellow-200/g;
-    const spans = document.getElementsByTagName("span");
-
-    for (let i = 0; i < spans.length; i++) {
-        const span = spans[i];
-        if (span.className.match(regex) && !span.getAttribute("id") && (span.textContent.trim().toLowerCase() === "plus")) {
-            console.log("Found the element:", span);
-
-            // 生成唯一的ID
-            const id = `my-custom-id-${i}`;
-
-            // 给匹配的span元素设置唯一的ID
-            span.setAttribute("id", id);
-
-
-            const chk = document.createElement("input");
-            span.textContent = "使用Mobile模型";
-
-
-            //将匹配的类名应用到按钮上
-            // chk.className = span.className;
-            chk.type = "checkbox";
-            chk.className='form-check-input float-left mt-1 mr-2 h-4 w-4 cursor-pointer appearance-none rounded-sm border border-gray-300 bg-white bg-contain bg-center bg-no-repeat align-top transition duration-200 checked:border-blue-600 checked:bg-blue-600 focus:outline-none';
-            
-            window.enableGPT4Mobile = !(localStorage.getItem("enable_gpt4_mobile") === 'false');
-            chk.checked = window.enableGPT4Mobile;
-            refreshGPT3ButtonTextStatus();
-
-            chk.addEventListener("click", function () {
-                if (chk.checked){
-                    alert("替换成功,使用油猴脚本的用户请刷新页面使用完整模型列表。\r\n注意：\r\n使用脚本书签的用户，\r\n会话模型依然会显示'Default (GPT-3.5)'\r\n不影响实际使用，\r\n刷新页面后可观察到会话模型已变化。");
-                }else{
-                    if (window.modelsPatched){
-                        alert("取消成功,您需要刷新页面才能恢复原始模型列表"); 
-                    }
-                }
-                window.enableGPT4Mobile = chk.checked;
-                localStorage.setItem("enable_gpt4_mobile",chk.checked);
-                // console.warn(chk.checked);
-                refreshGPT3ButtonTextStatus();
-            });
-
-            span.parentNode.insertBefore(chk, span.nextSibling);
-        }
-    }
-}
-
-function refreshGPT3ButtonTextStatus (){
-    window.enableGPT4Mobile = !(localStorage.getItem("enable_gpt4_mobile") === 'false');
-    let element = document.querySelector('span.truncate.text-sm.font-medium.md\\:pr-1\\.5.pr-1\\.5');
-    if (element && !window.modelsPatched){ //如果已经使用fetch补丁了模型列表,modelsPatched为true，就不需要手动触发了
-        element.textContent = window.enableGPT4Mobile ? 'GPT4-Mobile':'GPT-3.5';
     }
 }
 
