@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatGPT功能增强
 // @namespace    http://tampermonkey.net/
-// @version      1.4.2
+// @version      1.4.3
 // @description  目前功能：1.关闭数据监管；2.会话导入导出；3.高负载限制解锁 4.混合接入API(GPT3.5) 5.链接维持 ( 减少An error occured ) 6.聊天记录下载
 // @author       bigemon; 捈荼; Cyan; cr-zhichen
 // @match        https://chat.openai.com/*
@@ -119,7 +119,7 @@ window.LoadAPITemplateWindow = function () {
         card.appendChild(cardHeader);
 
         const cardBody = document.createElement("div");
-        cardBody.className = "p-4 overflow-y-auto bg-gray-100";
+        cardBody.className = "p-4 overflow-y-auto bg-auto";
         card.appendChild(cardBody);
 
         // 向面板主体添加控件
@@ -213,7 +213,7 @@ window.LoadAPITemplateWindow = function () {
 
     // 创建编辑框
     const form = document.createElement('form');
-    form.className = "bg-white";
+    form.className = "bg-auto";
     // form.style.padding = '20px';
 
 
@@ -341,8 +341,8 @@ window.LoadAPITemplateWindow = function () {
     function showAlert(message, color) {
         // 创建提示信息元素
         const alert = document.createElement('div');
-        alert.className = `alert alert-${color || 'success'}`;
-        alert.innerHTML = message;
+        alert.className = `text-white px-4 py-2 text-xl font-sans bg-${color || 'green'}-600`;
+        alert.innerHTML ="[ ! ]" + message;
         alert.style.display = 'none'; // 初始隐藏
         form.insertBefore(alert, form.firstChild); // 将提示信息插入到表单首部
 
@@ -382,7 +382,7 @@ window.LoadAPITemplateWindow = function () {
 
         // 如果有错误，则不执行保存操作
         if (hasError) {
-            showAlert('请填写必填项', 'danger');
+            showAlert('请填写必填项', 'red');
             return;
         }
 
@@ -1231,7 +1231,7 @@ setInterval(function () {
         });
 }, 10000);
 
-_alert("v1.4.2 脚本已启用。本工具由ChatGPT在指导下生成~\r\n" +
+_alert("v1.4.3 脚本已启用。本工具由ChatGPT在指导下生成~\r\n" +
     "更新:\r\n" +
     "\r\n" +
 	"· 为Plus用户增加APP可用的模型(更多轮次的GPT4对话) \r\n" +
