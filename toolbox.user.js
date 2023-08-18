@@ -531,18 +531,21 @@ window.boxInit = function () {
     for (let x = 0; x < navs.length; x++) {
         let nav = navs[x];
         let switchLabel = document.createElement("div");
+        let newChatButton = nav.querySelector("a"); // Select the first anchor element (the new chat button)
 
-        if (!nav.childNodes[0].hasOwnProperty('patched')) {
-            nav.childNodes[0].addEventListener("click", handleNewChatClick);
-            Object.defineProperty(nav.childNodes[0], 'patched', { value: true, enumerable: false });
+        if (!newChatButton.hasOwnProperty('patched')) {
+            newChatButton.addEventListener("click", handleNewChatClick);
+            Object.defineProperty(newChatButton, 'patched', { value: true, enumerable: false });
         }
 
         function handleNewChatClick(event) {
-            event.preventDefault();
+            event.stopPropagation(); // Stop the event from propagating further
+            event.preventDefault(); // Prevent the default action
+
             if (confirm("创建新的会话后, 使用导入功能导入的会话将失效,是否继续?")) {
-                nav.childNodes[0].removeEventListener('click', handleNewChatClick);
+                newChatButton.removeEventListener('click', handleNewChatClick);
                 window.clearTempValues();
-                nav.childNodes[0].click();
+                newChatButton.click(); // Trigger the actual click
             }
         }
 
