@@ -738,8 +738,8 @@ function main() {
             }
 
 
-            // 判断是否是流式响应
-            if (response.body && response.body instanceof ReadableStream && response.headers.get('content-type').indexOf('event-stream') != -1) {
+            // 判断是否是流式响应，增加对 json 类型数据的处理，读取历史消息时采用的并非时 event-stream方式
+            if (response.body && response.body instanceof ReadableStream && (response.headers.get('content-type').indexOf('event-stream') != -1 || response.headers.get('content-type').indexOf('json') != -1)) {
                 // 如果是流式响应，使用一个新的 ReadableStream
                 const modifiedStream = new ReadableStream({
                     start(controller) {
@@ -802,33 +802,10 @@ function main() {
 
 
     function processData(text) {
-        // console.log(text);
-        if (text.indexOf('data: ') == -1) {
-            return text;
-        }
-        const jsonStartIndex = text.indexOf('data: ') + 6;
-        const jsonString = text.substring(jsonStartIndex);
-        let obj;
-
-        try {
-            obj = JSON.parse(jsonString);
-            //覆盖标注返回值
-            if (obj.moderation_response) {
-                obj.moderation_response.flagged = false;
-                obj.moderation_response.blocked = false;
-            }
-
-        } catch (error) {
-            // 发生错误，无法转换为 JSON
-            return text;
-        }
-
-        // 将对象序列化为 JSON
-        const modifiedJson = JSON.stringify(obj);
-
-        // 将 "data: " 添加到 JSON 前
-        const modifiedText = `data: ${modifiedJson}`;
-        return modifiedText;
+        //直接采用字符串替换的方式关闭blocked和flagged
+        let mdText=text.replace(/"blocked"\s*:\s*true/g, '"blocked":false').replace(/"flagged"\s*:\s*true/g, '"flagged":false');
+        //console.log(text);
+        return mdText
     }
 
     window.openaiChatCompletionsP = async function (message, api_key) {
